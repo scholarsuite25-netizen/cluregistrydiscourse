@@ -1,0 +1,1 @@
+export default function OfflinePage(){return <div className="mx-auto max-w-xl px-4 py-16 text-center"><h1 className="text-2xl font-black">You’re offline</h1><p className="text-sm text-zinc-600 mt-2">Your access pass and programme shell are cached. Reconnect to retrieve live data.</p></div>;}

@@ -1,0 +1,12 @@
+{
+  "name": "CLU Registry Discourse 2026",
+  "short_name": "CLU Discourse",
+  "description": "Governance, Innovation and Service: Changing Higher Education Management — 15 Oct 2026",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#4C1769",
+  "theme_color": "#4C1769",
+  "icons": [
+    { "src": "/icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

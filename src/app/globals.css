@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-clu-purple: #4C1769;
+  --color-clu-purple-dark: #3A1150;
+  --color-clu-purple-light: #6B3A8A;
+  --color-clu-gold: #C9B676;
+  --color-clu-gold-dark: #A8935A;
+  --color-clu-gold-light: #E8D9A8;
+  --color-clu-orange: #B25900;
+  --color-clu-green: #0E7C3E;
+  --color-clu-lilac: #E9D5FF;
+  --color-clu-cream: #FFFBEB;
+  --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-playfair);
+  --font-mono: var(--font-geist-mono);
+}
+
+* { scrollbar-width: thin; scrollbar-color: #C9B676 #f5f3ff; }
+::selection { background: #C9B676; color: #4C1769; }
+
+html { scroll-behavior: smooth; }
+body {
+  background: #FFFCF8;
+  color: #1E1B2E;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* focus */
+*:focus-visible { outline: 2px solid #C9B676; outline-offset: 2px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #C9B676; border-radius: 999px; }
+::-webkit-scrollbar-track { background: #f5f3ff; }
+
+/* animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+/* glass */
+.glass { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+
+/* gradient text */
+.gradient-gold { background: linear-gradient(135deg, #C9B676 0%, #E8D9A8 50%, #A8935A 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
