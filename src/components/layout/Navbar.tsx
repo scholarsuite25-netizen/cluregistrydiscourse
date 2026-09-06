@@ -10,6 +10,7 @@ const nav = [
   { href: "/programme", label: "Programme" },
   { href: "/people", label: "People" },
   { href: "/materials", label: "Materials" },
+  { href: "/post-conference", label: "Post-Event" },
   { href: "/portal", label: "Portal" },
 ];
 

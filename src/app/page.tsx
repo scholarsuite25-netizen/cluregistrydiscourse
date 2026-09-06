@@ -34,6 +34,15 @@ export default function HomePage() {
               <p className="mt-3 text-lg sm:text-xl font-semibold text-white leading-snug max-w-2xl">
                 {EVENT.fullTitle}
               </p>
+
+              {/* Guest Lecturer */}
+              <div className="mt-4 rounded-2xl bg-white/10 border border-white/20 p-4 max-w-2xl">
+                <div className="text-xs font-bold tracking-widest text-[#C9B676]">GUEST LECTURER</div>
+                <div className="text-lg font-black text-white mt-1">Chief (Mrs.) Mojisola Olusola Ladipo, FNIM, mni</div>
+                <p className="text-sm text-white/80 mt-2 leading-relaxed">
+                  Distinguished university administrator and the first female Registrar of the University of Ibadan. She served as Registrar for ten years and has contributed extensively to professional university administration, leadership development, training, and mentoring in Nigeria. She earned a first degree in English and a master's in Industrial and Labour Relations from the University of Ibadan and helped revive the Committee of Registrars of Nigerian Universities.
+                </p>
+              </div>
               <p className="mt-3 text-sm sm:text-[15px] text-white/80 max-w-xl leading-relaxed">
                 A historic gathering of registrars, administrators and scholars to reimagine governance, ignite innovation and elevate service in Nigerian higher education.
               </p>
@@ -70,7 +79,7 @@ export default function HomePage() {
                 <Link href="/register"><Button size="lg" variant="secondary" className="gap-2">Register & Get Access Pass <ArrowRight className="h-4 w-4" /></Button></Link>
                 <Link href="/programme" className="inline-flex items-center gap-2 rounded-full border border-white/20 text-white px-6 py-3 font-semibold hover:bg-white/10 transition"><Play className="h-4 w-4" /> View Programme</Link>
               </div>
-              <p className="mt-3 text-xs text-white/60">Free registration • Instant access pass with QR • No fake data • Real verification</p>
+              <p className="mt-3 text-xs text-white/60">Free registration • Instant access pass with QR • Secure verification</p>
             </div>
 
             <div className="space-y-4">

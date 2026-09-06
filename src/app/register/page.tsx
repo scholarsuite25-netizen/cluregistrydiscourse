@@ -20,6 +20,7 @@ export default function RegisterPage() {
     email: "",
     phone: "",
     institution: "",
+    designation: "",
     participationMode: "Physical" as "Physical" | "Online",
   });
 
@@ -48,6 +49,7 @@ export default function RegisterPage() {
       email: form.email.trim().toLowerCase(),
       phone: form.phone.trim(),
       institution: form.institution.trim(),
+      designation: form.designation.trim() || null,
       participation_mode: form.participationMode,
       consent_email: true,
       public_activity_opt_in: true,
@@ -260,6 +262,16 @@ export default function RegisterPage() {
               value={form.institution}
               onChange={(e) => update("institution", e.target.value)}
               placeholder="e.g., University of Lagos"
+              className="mt-1 w-full rounded-xl border-2 border-zinc-200 px-4 py-4 text-lg focus:border-[#4C1769] focus:ring-2 focus:ring-purple-100"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-bold text-[#4C1769]">Designation / Rank</label>
+            <input
+              value={form.designation}
+              onChange={(e) => update("designation", e.target.value)}
+              placeholder="e.g., Senior Registrar, Professor, etc."
               className="mt-1 w-full rounded-xl border-2 border-zinc-200 px-4 py-4 text-lg focus:border-[#4C1769] focus:ring-2 focus:ring-purple-100"
             />
           </div>

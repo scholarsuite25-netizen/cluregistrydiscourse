@@ -40,7 +40,7 @@ export function ActivityWidget() {
       </div>
       {items.length === 0 ? (
         <p className="mt-3 text-sm text-zinc-600 leading-relaxed">
-          Be among the first to register — your name appears here only if you opt-in for public activity. No fake names are ever shown.
+          Be among the first to register — your name appears here only if you opt-in for public activity.
         </p>
       ) : (
         <ul className="mt-3 space-y-2">
@@ -56,7 +56,7 @@ export function ActivityWidget() {
           ))}
         </ul>
       )}
-      <p className="mt-3 text-[11px] text-zinc-500">Privacy-safe • Only consenting registrations • Real data only</p>
+      <p className="mt-3 text-[11px] text-zinc-500">Privacy-safe • Only consenting registrations</p>
     </div>
   );
 }
