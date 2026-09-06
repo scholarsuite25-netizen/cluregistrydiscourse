@@ -135,25 +135,27 @@ export default function HomePage() {
           </div>
           <Link href="/people" className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[#4C1769] text-white px-5 py-2.5 text-sm font-semibold">View all people <ArrowRight className="h-4 w-4" /></Link>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
           {PEOPLE.map((p) => (
-            <div key={p.slug} className="group rounded-[24px] bg-white border border-zinc-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition overflow-hidden">
-              <div className="h-36 bg-gradient-to-br from-[#4C1769] to-[#6B3A8A] relative">
+            <Link key={p.slug} href="/people" className="group rounded-[24px] bg-white border border-zinc-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition overflow-hidden">
+              <div className="h-32 bg-gradient-to-br from-[#4C1769] to-[#6B3A8A] relative">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
                   <span className="rounded-full bg-[#C9B676] text-[#4C1769] text-[10px] font-black tracking-widest px-2.5 py-1">{p.badge}</span>
-                  <span className="h-10 w-10 rounded-full bg-white text-[#4C1769] grid place-items-center font-black">{p.initials}</span>
+                  <span className="h-12 w-12 rounded-full bg-white text-[#4C1769] grid place-items-center font-black text-lg">{p.initials}</span>
                 </div>
-                <div className="absolute top-3 right-3 text-[10px] font-bold tracking-widest text-white/70 border border-white/20 rounded-full px-2 py-1">PHOTO AWAITING APPROVAL</div>
               </div>
-              <div className="p-5">
-                <h3 className="font-bold leading-tight text-[#1A0B2E] line-clamp-2">{p.name}</h3>
+              <div className="p-4">
+                <h3 className="font-bold leading-tight text-[#1A0B2E] line-clamp-2 text-sm">{p.name}</h3>
                 <p className="text-xs font-semibold text-[#C9B676] mt-1 line-clamp-2">{p.role}</p>
-                <p className="text-sm text-zinc-600 mt-3 line-clamp-3 leading-relaxed">{p.excerpt}</p>
-                <Link href="/people" className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#4C1769] group-hover:gap-2 transition-all">Read profile <ArrowRight className="h-4 w-4" /></Link>
+                <p className="text-xs text-zinc-600 mt-2 line-clamp-2 leading-relaxed">{p.excerpt}</p>
+                <span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-[#4C1769] group-hover:gap-2 transition-all">View profile <ArrowRight className="h-3 w-3" /></span>
               </div>
-            </div>
+            </Link>
           ))}
+        </div>
+        <div className="mt-6 text-center sm:hidden">
+          <Link href="/people" className="inline-flex items-center gap-2 rounded-full bg-[#4C1769] text-white px-5 py-2.5 text-sm font-semibold">View all people <ArrowRight className="h-4 w-4" /></Link>
         </div>
       </section>
 

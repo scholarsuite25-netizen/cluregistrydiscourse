@@ -1,6 +1,6 @@
 import { PEOPLE } from "@/lib/constants";
 import Link from "next/link";
-import { ArrowRight, Mail, Phone } from "lucide-react";
+import { ArrowRight, Mail, Phone, MapPin } from "lucide-react";
 
 export default function PeoplePage() {
   return (
@@ -13,61 +13,28 @@ export default function PeoplePage() {
           </p>
         </div>
 
-        {/* Chief Moji Ladipo — Featured */}
-        <div className="mb-10 rounded-[32px] bg-white border border-purple-100 shadow-xl overflow-hidden">
-          <div className="grid md:grid-cols-[350px_1fr]">
-            <div className="bg-gradient-to-br from-[#4C1769] to-[#6B3A8A] p-8 flex flex-col items-center justify-center text-center">
-              <div className="w-40 h-40 rounded-full bg-[#C9B676] text-[#4C1769] grid place-items-center text-5xl font-black shadow-2xl">
-                ML
-              </div>
-              <div className="mt-4 rounded-full bg-white/15 border border-white/20 text-white text-xs font-bold tracking-widest px-3 py-1">
-                KEYNOTE LECTURER
-              </div>
-              <p className="text-white/70 text-xs mt-3">Photograph awaiting official approval</p>
-            </div>
-            <div className="p-8">
-              <h2 className="text-2xl font-black text-[#1A0B2E] leading-tight">Chief (Mrs.) Mojisola Olusola Ladipo, FNIM, mni</h2>
-              <p className="text-sm font-bold text-[#C9B676] mt-1">Lecturer of the Day</p>
-              <div className="mt-4 text-sm text-zinc-700 leading-relaxed space-y-3">
-                <p>
-                  Chief (Mrs.) Mojisola Olusola Ladipo, FNIM, mni, is a distinguished university administrator and the first female Registrar of the University of Ibadan. She served as Registrar for ten years and has contributed extensively to professional university administration, leadership development, training, and mentoring in Nigeria.
-                </p>
-                <p>
-                  She earned a first degree in English and a master's in Industrial and Labour Relations from the University of Ibadan. She helped revive the Committee of Registrars of Nigerian Universities and later served in university administration, consultancy, training, and mentoring roles.
-                </p>
-                <p>
-                  Her lecture will address <b>Governance, Innovation and Service: Changing Higher Education Management</b> — the central theme of this maiden discourse.
-                </p>
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="rounded-full bg-purple-50 border border-purple-100 px-3 py-1 text-xs font-bold text-[#4C1769]">University of Ibadan</span>
-                <span className="rounded-full bg-purple-50 border border-purple-100 px-3 py-1 text-xs font-bold text-[#4C1769]">FNIM</span>
-                <span className="rounded-full bg-purple-50 border border-purple-100 px-3 py-1 text-xs font-bold text-[#4C1769]">mni</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Other People */}
+        {/* All People — Equal Focus */}
         <div className="grid md:grid-cols-2 gap-6">
-          {PEOPLE.filter((p) => p.slug !== "mojisola-ladipo").map((p) => (
-            <div key={p.slug} className="rounded-[24px] bg-white border border-zinc-100 shadow-sm overflow-hidden">
+          {PEOPLE.map((p) => (
+            <div key={p.slug} className="rounded-[24px] bg-white border border-purple-100 shadow-lg overflow-hidden">
               <div className="flex">
                 {/* Photo placeholder — left side, text wraps around */}
-                <div className="w-32 h-32 bg-gradient-to-br from-[#4C1769] to-[#6B3A8A] shrink-0 flex flex-col items-center justify-center text-center p-2">
-                  <span className="h-16 w-16 rounded-full bg-[#C9B676] text-[#4C1769] grid place-items-center font-black text-xl">{p.initials}</span>
-                  <span className="text-white/60 text-[9px] mt-1">Photo pending</span>
+                <div className="w-36 h-36 bg-gradient-to-br from-[#4C1769] to-[#6B3A8A] shrink-0 flex flex-col items-center justify-center text-center p-2">
+                  <span className="h-20 w-20 rounded-full bg-[#C9B676] text-[#4C1769] grid place-items-center font-black text-2xl shadow-lg">{p.initials}</span>
+                  <span className="text-white/70 text-[10px] mt-2 font-bold">{p.badge}</span>
                 </div>
                 {/* Text wraps around the photo */}
                 <div className="p-5 flex-1">
-                  <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-start justify-between gap-2 mb-2">
                     <div>
                       <h3 className="font-black text-lg leading-tight text-[#1A0B2E]">{p.name}</h3>
                       <p className="text-sm font-bold text-[#C9B676] mt-1">{p.role}</p>
                     </div>
-                    <span className="shrink-0 rounded-full bg-[#C9B676] text-[#4C1769] text-[10px] font-black tracking-widest px-2.5 py-1">{p.badge}</span>
                   </div>
-                  <p className="text-sm text-zinc-700 mt-3 leading-relaxed">{p.bio}</p>
+                  <p className="text-sm text-zinc-700 leading-relaxed">{p.bio}</p>
+                  <Link href="/people" className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-[#4C1769] hover:gap-2 transition-all">
+                    Full profile <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </div>
               </div>
             </div>
