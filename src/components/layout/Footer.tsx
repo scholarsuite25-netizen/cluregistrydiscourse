@@ -29,6 +29,7 @@ export function Footer() {
               <li><Link href="/programme" className="hover:text-white">Programme</Link></li>
               <li><Link href="/people" className="hover:text-white">People & LOC</Link></li>
               <li><Link href="/materials" className="hover:text-white">Materials</Link></li>
+              <li><Link href="/visitors-guide" className="hover:text-white">Visitors Guide</Link></li>
               <li><Link href="/post-conference" className="hover:text-white">Post-Event</Link></li>
               <li><Link href="/portal" className="hover:text-white">Participant Portal</Link></li>
               <li><Link href="/register" className="hover:text-white">Register</Link></li>
