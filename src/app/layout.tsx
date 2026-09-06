@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { PwaRegister } from "@/components/PwaRegister";
 import { EVENT } from "@/lib/constants";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
+        <PwaRegister />
         {/* floating actions */}
         <div className="fixed bottom-4 right-4 z-40 flex flex-col gap-2 md:hidden">
           <a href={EVENT.phoneHref} className="h-12 w-12 rounded-full bg-[#4C1769] text-white grid place-items-center shadow-xl">📞</a>
