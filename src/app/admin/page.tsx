@@ -62,10 +62,10 @@ export default function AdminPage() {
   }
 
   const cards = [
-    { title: "Registrations", href: "/admin", desc: "List, search, resend, export CSV/XLSX, audit trail", stat: "— connect Supabase" },
+    { title: "View All Registrations", href: "/admin/registrations", desc: "Full table with search, filter, CSV/Excel download for logistics planning", stat: "Download CSV/Excel" },
     { title: "QR Scanner / Check-in", href: "/admin/checkin", desc: "Camera scanner + manual code lookup, idempotent", stat: "Camera API ready" },
     { title: "Programme Manager", href: "/admin/programme", desc: "Create, reorder, publish, archive, ICS/PDF", stat: "10 items seeded" },
-    { title: "Materials", href: "/admin/materials", desc: "Private bucket, signed URLs, eligibility & release", stat: "Private bucket" },
+    { title: "Materials", href: "/admin/materials", desc: "Upload and release materials to participants", stat: "All registered" },
     { title: "People & LOC", href: "/admin/loc", desc: "Edit lecturer title, photos, LOC CRUD", stat: "0 LOC — correct" },
     { title: "Communications", href: "/admin", desc: "Announcements, campaigns, consent, idempotency", stat: "Email/Push/WhatsApp adapters" },
     { title: "Attendance Review", href: "/admin/checkin", desc: "Physical & online (attendance word), flag suspicious", stat: "Zero-cost fallback" },
