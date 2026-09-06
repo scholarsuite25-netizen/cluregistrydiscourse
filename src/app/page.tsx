@@ -131,7 +131,7 @@ export default function HomePage() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-purple-50 border border-purple-100 px-3 py-1 text-xs font-bold tracking-widest text-[#4C1769]"><Sparkles className="h-3 w-3" /> DISTINGUISHED VOICES</div>
             <h2 className="mt-3 text-2xl sm:text-3xl font-black tracking-tight text-[#1A0B2E]">Meet the discourse leaders</h2>
-            <p className="text-sm text-zinc-600 max-w-2xl mt-1">Dignified academic presence — no fabricated bios, no AI likenesses. All profiles await final organiser approval before publication.</p>
+            <p className="text-sm text-zinc-600 max-w-2xl mt-1">Distinguished academics and administrators shaping the future of higher education management.</p>
           </div>
           <Link href="/people" className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[#4C1769] text-white px-5 py-2.5 text-sm font-semibold">View all people <ArrowRight className="h-4 w-4" /></Link>
         </div>
