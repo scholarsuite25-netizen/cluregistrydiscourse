@@ -67,8 +67,8 @@ export default function AdminPage() {
     { title: "Programme Manager", href: "/admin/programme", desc: "Create, reorder, publish, archive, ICS/PDF", stat: "10 items seeded" },
     { title: "Materials", href: "/admin/materials", desc: "Upload and release materials to participants", stat: "All registered" },
     { title: "People & LOC", href: "/admin/loc", desc: "Edit lecturer title, photos, LOC CRUD", stat: "0 LOC — correct" },
+    { title: "Manage Hotels", href: "/admin/hotels", desc: "Add, edit, remove hotels shown on Visitors Guide page", stat: "Dynamic from DB" },
     { title: "Communications", href: "/admin", desc: "Announcements, campaigns, consent, idempotency", stat: "Email/Push/WhatsApp adapters" },
-    { title: "Attendance Review", href: "/admin/checkin", desc: "Physical & online (attendance word), flag suspicious", stat: "Zero-cost fallback" },
     { title: "Certificates", href: "/admin/certificates", desc: "Template, bulk issue, serial+QR, revoke/reissue", stat: "Verification: /certificate/verify/[serial]" },
   ];
 

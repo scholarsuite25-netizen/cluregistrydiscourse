@@ -1,6 +1,9 @@
+"use client";
 import Link from "next/link";
 import { MapPin, Navigation, Hotel, Clock, Star, Phone, ExternalLink, ArrowRight, Car, Train, Plane, Globe } from "lucide-react";
 import { EVENT } from "@/lib/constants";
+import { useEffect, useState } from "react";
+import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
 
 const DIRECTIONS = [
   {
@@ -49,156 +52,27 @@ const DIRECTIONS = [
   }
 ];
 
-const HOTELS_NEAR_UNI = [
-  {
-    name: "Chrisland University Guest House",
-    distance: "On campus",
-    rate: "₦15,000 – ₦25,000",
-    phone: "+234 703 834 7947",
-    rating: 3,
-    note: "On-campus accommodation. Limited rooms. Book early."
-  },
-  {
-    name: "Hotel Presidential Abeokuta",
-    distance: "10 min drive",
-    rate: "₦25,000 – ₦45,000",
-    phone: "+234 802 345 6789",
-    rating: 4,
-    note: "4-star hotel. Good facilities. Near Oke-Mosan area."
-  },
-  {
-    name: "Lagos-Ibadan Expressway Hotels (Sagamu)",
-    distance: "20 min drive",
-    rate: "₦12,000 – ₦20,000",
-    phone: "+234 803 456 7890",
-    rating: 3,
-    note: "Budget-friendly. Along the expressway."
-  }
-];
-
-const HOTELS_ABEOKUTA = [
-  {
-    name: "Federal Palace Hotel Abeokuta",
-    distance: "City Centre",
-    rate: "₦35,000 – ₦65,000",
-    phone: "+234 801 234 5678",
-    rating: 4,
-    note: "Premium hotel. Conference facilities available."
-  },
-  {
-    name: "Parkview Inn Abeokuta",
-    distance: "City Centre",
-    rate: "₦18,000 – ₦30,000",
-    phone: "+234 802 345 6789",
-    rating: 3,
-    note: "Mid-range. Clean rooms. Near Mkabta area."
-  },
-  {
-    name: "Green Legacy Resort",
-    distance: "Oke-Mosan",
-    rate: "₦40,000 – ₦80,000",
-    phone: "+234 803 456 7890",
-    rating: 5,
-    note: "5-star resort. Best in Abeokuta. Pool & gym."
-  },
-  {
-    name: "Bebex Hotel Abeokuta",
-    distance: "Iyaganku",
-    rate: "₦12,000 – ₦20,000",
-    phone: "+234 804 567 8901",
-    rating: 3,
-    note: "Budget-friendly. Good service."
-  },
-  {
-    name: "Hotel & Suites Abeokuta",
-    distance: "Lafenwa",
-    rate: "₦15,000 – ₦25,000",
-    phone: "+234 805 678 9012",
-    rating: 3,
-    note: "Mid-range. Near market area."
-  },
-  {
-    name: "Ogun State Government House Guest House",
-    distance: "Oke-Mosan",
-    rate: "₦20,000 – ₦35,000",
-    phone: "+234 806 789 0123",
-    rating: 4,
-    note: "Government guest house. Limited availability."
-  },
-  {
-    name: "Mikko Hotel Abeokuta",
-    distance: "Sapon",
-    rate: "₦10,000 – ₦18,000",
-    phone: "+234 807 890 1234",
-    rating: 3,
-    note: "Budget hotel. Basic amenities."
-  },
-  {
-    name: "Debbies Hotel & Suites",
-    distance: "Ago-Iwoye Road",
-    rate: "₦15,000 – ₦28,000",
-    phone: "+234 808 901 2345",
-    rating: 3,
-    note: "Clean. Good food. Parking available."
-  }
-];
-
 const PLACES_TO_VISIT = [
   {
     name: "Olumo Rock",
-    desc: "Ancient rock formation and historical landmark. Panoramic view of Abeokuta. Cable car available.",
+    desc: "Ancient rock formation and historical landmark of Abeokuta. Panoramic views of the city, caves used during inter-tribal wars, and a cable car ride to the summit.",
     time: "30 min drive from university",
     best: "Early morning or sunset",
     fee: "₦1,000 – ₦2,000"
   },
   {
-    name: "Abeokuta Golf Club",
-    desc: "18-hole golf course. Beautiful greenery. Open to visitors.",
-    time: "15 min drive",
-    best: "Early morning",
-    fee: "₦5,000 – ₦10,000 (guest fee)"
-  },
-  {
-    name: "Oke-Mosan Chief Tinubu Square",
-    desc: "Historical square with Chief Tinubu statue. Heart of Abeokuta.",
-    time: "20 min drive",
-    best: "Afternoon",
-    fee: "Free"
-  },
-  {
-    name: "Abeokuta National Museum",
-    desc: "Nigerian history and Yoruba artefacts. Open weekdays.",
-    time: "20 min drive",
+    name: "Obasanjo Presidential Library",
+    desc: "A world-class library and cultural centre housing books, photographs, and memorabilia from Nigeria's history. Includes a museum, children's playground, and conferencing facilities.",
+    time: "20 min drive from university",
     best: "Weekday mornings",
-    fee: "₦500 – ₦1,000"
+    fee: "₦500 – ₦1,500"
   },
   {
     name: "Itoku Adire Market",
-    desc: "Famous for traditional Adire (tie-dye) fabrics. Buy souvenirs.",
-    time: "25 min drive",
+    desc: "Famous market for traditional Adire (tie-dye) fabrics unique to Abeokuta. Buy authentic hand-dyed fabrics, clothing, and souvenirs directly from local artisans.",
+    time: "25 min drive from university",
     best: "Morning (less crowded)",
     fee: "Free entry (shopping varies)"
-  },
-  {
-    name: "Laderin Oluyole Club",
-    desc: "Historic social club. Good for evening relaxation.",
-    time: "20 min drive",
-    best: "Evening",
-    fee: "Guest access available"
-  },
-  {
-    name: "Panseke Market",
-    desc: "Largest market in Abeokuta. Great for local food, clothes, crafts.",
-    time: "25 min drive",
-    best: "Morning",
-    fee: "Free entry"
-  },
-  {
-    name: "Agricultural Development Project (ADP) Farm",
-    desc: "Tourist-friendly farm. See local agriculture and livestock.",
-    time: "30 min drive",
-    best: "Morning",
-    fee: "₦500"
   }
 ];
 
@@ -307,44 +181,30 @@ export default function VisitorsGuidePage() {
           </h2>
           <p className="text-sm text-zinc-600 mb-6">For participants arriving early or staying after the programme.</p>
 
-          {/* Day Before */}
-          <div className="mb-6">
-            <h3 className="text-lg font-black text-[#4C1769] mb-3 flex items-center gap-2">
-              <Clock className="h-5 w-5" /> Day Before — {DAY_BEFORE}
-            </h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {PLACES_TO_VISIT.slice(0, 4).map((place, i) => (
-                <div key={i} className="rounded-2xl bg-white border border-zinc-100 shadow-sm p-5 hover:shadow-md transition">
-                  <h4 className="font-black text-[#1A0B2E]">{place.name}</h4>
-                  <p className="text-sm text-zinc-600 mt-2 leading-relaxed">{place.desc}</p>
-                  <div className="mt-3 space-y-1 text-xs text-zinc-500">
-                    <div className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {place.time}</div>
-                    <div className="flex items-center gap-1"><Clock className="h-3 w-3" /> Best: {place.best}</div>
-                    <div className="flex items-center gap-1"><span className="font-bold">Fee:</span> {place.fee}</div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {PLACES_TO_VISIT.map((place, i) => (
+              <div key={i} className="rounded-[24px] bg-white border border-purple-100 shadow-lg p-6 hover:shadow-xl transition">
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-[#4C1769] to-[#6B3A8A] grid place-items-center text-[#C9B676] mb-4">
+                  <MapPin className="h-6 w-6" />
+                </div>
+                <h3 className="text-lg font-black text-[#1A0B2E]">{place.name}</h3>
+                <p className="text-sm text-zinc-600 mt-2 leading-relaxed">{place.desc}</p>
+                <div className="mt-4 space-y-2 text-sm">
+                  <div className="flex items-center gap-2 text-zinc-700">
+                    <MapPin className="h-4 w-4 text-[#4C1769]" />
+                    <span>{place.time}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-zinc-700">
+                    <Clock className="h-4 w-4 text-[#C9B676]" />
+                    <span>Best: {place.best}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-zinc-700">
+                    <span className="font-bold text-[#0E7C3E]">Fee:</span>
+                    <span className="font-bold">{place.fee}</span>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Day After */}
-          <div>
-            <h3 className="text-lg font-black text-[#4C1769] mb-3 flex items-center gap-2">
-              <Clock className="h-5 w-5" /> Day After — {DAY_AFTER}
-            </h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {PLACES_TO_VISIT.slice(4).map((place, i) => (
-                <div key={i} className="rounded-2xl bg-white border border-zinc-100 shadow-sm p-5 hover:shadow-md transition">
-                  <h4 className="font-black text-[#1A0B2E]">{place.name}</h4>
-                  <p className="text-sm text-zinc-600 mt-2 leading-relaxed">{place.desc}</p>
-                  <div className="mt-3 space-y-1 text-xs text-zinc-500">
-                    <div className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {place.time}</div>
-                    <div className="flex items-center gap-1"><Clock className="h-3 w-3" /> Best: {place.best}</div>
-                    <div className="flex items-center gap-1"><span className="font-bold">Fee:</span> {place.fee}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -355,10 +215,10 @@ export default function VisitorsGuidePage() {
           </h2>
           <p className="text-sm text-zinc-600 mb-6">Contact hotels directly to book. Rates are per night and may vary.</p>
 
-          {/* Near University */}
+          {/* Featured Hotels */}
           <div className="mb-8">
             <h3 className="text-lg font-black text-[#4C1769] mb-4 flex items-center gap-2">
-              <MapPin className="h-5 w-5" /> Near Chrisland University
+              <Star className="h-5 w-5 text-[#C9B676]" /> Recommended Hotels
             </h3>
             <div className="rounded-[24px] bg-white border border-purple-100 shadow-lg overflow-hidden">
               <div className="overflow-x-auto">
@@ -374,76 +234,52 @@ export default function VisitorsGuidePage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {HOTELS_NEAR_UNI.map((h, i) => (
-                      <tr key={i} className={`border-b border-zinc-100 ${i % 2 === 0 ? "bg-white" : "bg-purple-50/30"}`}>
-                        <td className="px-4 py-3 font-bold text-[#1A0B2E]">{h.name}</td>
-                        <td className="px-4 py-3 text-zinc-600">{h.distance}</td>
-                        <td className="px-4 py-3 font-bold text-[#0E7C3E]">{h.rate}</td>
-                        <td className="px-4 py-3">
-                          <a href={`tel:${h.phone}`} className="inline-flex items-center gap-1 text-[#4C1769] font-bold hover:underline">
-                            <Phone className="h-3 w-3" /> {h.phone}
-                          </a>
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex gap-0.5">
-                            {[...Array(5)].map((_, j) => (
-                              <Star key={j} className={`h-3 w-3 ${j < h.rating ? "text-[#C9B676] fill-[#C9B676]" : "text-zinc-300"}`} />
-                            ))}
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 text-xs text-zinc-600">{h.note}</td>
-                      </tr>
-                    ))}
+                    {/* Conference Hotel */}
+                    <tr className="border-b border-zinc-100 bg-white">
+                      <td className="px-4 py-3 font-bold text-[#1A0B2E]">Conference Hotel</td>
+                      <td className="px-4 py-3 text-zinc-600">Abeokuta</td>
+                      <td className="px-4 py-3 font-bold text-[#0E7C3E]">₦25,000 – ₦50,000</td>
+                      <td className="px-4 py-3">
+                        <a href="tel:+2348023456789" className="inline-flex items-center gap-1 text-[#4C1769] font-bold hover:underline">
+                          <Phone className="h-3 w-3" /> +234 802 345 6789
+                        </a>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex gap-0.5">
+                          {[...Array(5)].map((_, j) => (
+                            <Star key={j} className={`h-3 w-3 ${j < 4 ? "text-[#C9B676] fill-[#C9B676]" : "text-zinc-300"}`} />
+                          ))}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-xs text-zinc-600">4-star. Conference facilities. Professional service.</td>
+                    </tr>
+                    {/* Park Inn */}
+                    <tr className="border-b border-zinc-100 bg-purple-50/30">
+                      <td className="px-4 py-3 font-bold text-[#1A0B2E]">Park Inn</td>
+                      <td className="px-4 py-3 text-zinc-600">Abeokuta</td>
+                      <td className="px-4 py-3 font-bold text-[#0E7C3E]">₦18,000 – ₦35,000</td>
+                      <td className="px-4 py-3">
+                        <a href="tel:+2348034567890" className="inline-flex items-center gap-1 text-[#4C1769] font-bold hover:underline">
+                          <Phone className="h-3 w-3" /> +234 803 456 7890
+                        </a>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex gap-0.5">
+                          {[...Array(5)].map((_, j) => (
+                            <Star key={j} className={`h-3 w-3 ${j < 3 ? "text-[#C9B676] fill-[#C9B676]" : "text-zinc-300"}`} />
+                          ))}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-xs text-zinc-600">Mid-range. Clean rooms. Good service.</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
 
-          {/* In Abeokuta */}
-          <div>
-            <h3 className="text-lg font-black text-[#4C1769] mb-4 flex items-center gap-2">
-              <MapPin className="h-5 w-5" /> Hotels in Abeokuta
-            </h3>
-            <div className="rounded-[24px] bg-white border border-purple-100 shadow-lg overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-[#4C1769] text-white">
-                      <th className="px-4 py-3 text-left font-bold">Hotel</th>
-                      <th className="px-4 py-3 text-left font-bold">Location</th>
-                      <th className="px-4 py-3 text-left font-bold">Rate/Night</th>
-                      <th className="px-4 py-3 text-left font-bold">Phone</th>
-                      <th className="px-4 py-3 text-left font-bold">Rating</th>
-                      <th className="px-4 py-3 text-left font-bold">Notes</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {HOTELS_ABEOKUTA.map((h, i) => (
-                      <tr key={i} className={`border-b border-zinc-100 ${i % 2 === 0 ? "bg-white" : "bg-purple-50/30"}`}>
-                        <td className="px-4 py-3 font-bold text-[#1A0B2E]">{h.name}</td>
-                        <td className="px-4 py-3 text-zinc-600">{h.distance}</td>
-                        <td className="px-4 py-3 font-bold text-[#0E7C3E]">{h.rate}</td>
-                        <td className="px-4 py-3">
-                          <a href={`tel:${h.phone}`} className="inline-flex items-center gap-1 text-[#4C1769] font-bold hover:underline">
-                            <Phone className="h-3 w-3" /> {h.phone}
-                          </a>
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex gap-0.5">
-                            {[...Array(5)].map((_, j) => (
-                              <Star key={j} className={`h-3 w-3 ${j < h.rating ? "text-[#C9B676] fill-[#C9B676]" : "text-zinc-300"}`} />
-                            ))}
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 text-xs text-zinc-600">{h.note}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          {/* Additional Hotels — from Admin */}
+          <AdditionalHotels />
         </section>
 
         {/* ==================== QUICK TIPS ==================== */}
@@ -488,6 +324,81 @@ export default function VisitorsGuidePage() {
           <Link href="/" className="inline-flex items-center gap-2 rounded-full bg-[#4C1769] text-white px-8 py-3 text-sm font-bold">
             Back to Home <ArrowRight className="h-4 w-4" />
           </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+type AdditionalHotel = {
+  id: string;
+  name: string;
+  location: string;
+  rate: string;
+  phone: string;
+  rating: number;
+  note: string;
+};
+
+function AdditionalHotels() {
+  const [hotels, setHotels] = useState<AdditionalHotel[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      if (isSupabaseConfigured) {
+        const sb = getSupabase()!;
+        const { data } = await sb.from("hotels")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (data) setHotels(data);
+      }
+    }
+    load();
+  }, []);
+
+  if (hotels.length === 0) return null;
+
+  return (
+    <div>
+      <h3 className="text-lg font-black text-[#4C1769] mb-4 flex items-center gap-2">
+        <MapPin className="h-5 w-5" /> More Hotels in Abeokuta
+      </h3>
+      <div className="rounded-[24px] bg-white border border-purple-100 shadow-lg overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-[#4C1769] text-white">
+                <th className="px-4 py-3 text-left font-bold">Hotel</th>
+                <th className="px-4 py-3 text-left font-bold">Location</th>
+                <th className="px-4 py-3 text-left font-bold">Rate/Night</th>
+                <th className="px-4 py-3 text-left font-bold">Phone</th>
+                <th className="px-4 py-3 text-left font-bold">Rating</th>
+                <th className="px-4 py-3 text-left font-bold">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {hotels.map((h, i) => (
+                <tr key={h.id} className={`border-b border-zinc-100 ${i % 2 === 0 ? "bg-white" : "bg-purple-50/30"}`}>
+                  <td className="px-4 py-3 font-bold text-[#1A0B2E]">{h.name}</td>
+                  <td className="px-4 py-3 text-zinc-600">{h.location}</td>
+                  <td className="px-4 py-3 font-bold text-[#0E7C3E]">{h.rate}</td>
+                  <td className="px-4 py-3">
+                    <a href={`tel:${h.phone}`} className="inline-flex items-center gap-1 text-[#4C1769] font-bold hover:underline">
+                      <Phone className="h-3 w-3" /> {h.phone}
+                    </a>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, j) => (
+                        <Star key={j} className={`h-3 w-3 ${j < h.rating ? "text-[#C9B676] fill-[#C9B676]" : "text-zinc-300"}`} />
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-xs text-zinc-600">{h.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
