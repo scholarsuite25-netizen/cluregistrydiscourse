@@ -14,8 +14,8 @@ const DIRECTIONS = [
       "Drive straight on the expressway (toll gates may apply)",
       "At Sagamu Interchange, turn right onto Abeokuta–Sagamu Expressway",
       "Continue towards Abeokuta on the expressway",
-      "Pass NNPC Filling Station on your left",
-      "Continue past Iyana Mortuary area",
+      "Turn to NNPC Filling Station on your right towards Abiola Way",
+      "At Iyana Mortuary Area, turn right to Idi Aba Road, along FMC",
       "Pass Federal Medical Centre (FMC) on your right",
       "Continue straight — Chrisland University is on your left",
       "Estimated time: 1.5 – 2 hours from Lagos Island"
