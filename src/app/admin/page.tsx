@@ -1,9 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import { LogIn } from "lucide-react";
+import { LogIn, Users, CheckCircle2, Clock } from "lucide-react";
 
 export default function AdminPage() {
   const [email, setEmail] = useState("");
@@ -11,6 +11,7 @@ export default function AdminPage() {
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
+  const [stats, setStats] = useState({ total: 0, physical: 0, online: 0 });
   const router = useRouter();
 
   async function handleLogin(e: React.FormEvent) {
@@ -31,6 +32,19 @@ export default function AdminPage() {
     }
     setLoading(false);
   }
+
+  // Fetch stats after login
+  useEffect(() => {
+    if (!signedIn || !isSupabaseConfigured) return;
+    async function fetchStats() {
+      const sb = getSupabase()!;
+      const { count: total } = await sb.from("registrations").select("*", { count: "exact", head: true }).eq("status", "confirmed");
+      const { count: physical } = await sb.from("registrations").select("*", { count: "exact", head: true }).eq("status", "confirmed").eq("participation_mode", "Physical");
+      const { count: online } = await sb.from("registrations").select("*", { count: "exact", head: true }).eq("status", "confirmed").eq("participation_mode", "Online");
+      setStats({ total: total || 0, physical: physical || 0, online: online || 0 });
+    }
+    fetchStats();
+  }, [signedIn]);
 
   if (!signedIn) {
     return (
@@ -62,7 +76,7 @@ export default function AdminPage() {
   }
 
   const cards = [
-    { title: "View All Registrations", href: "/admin/registrations", desc: "Full table with search, filter, CSV/Excel download for logistics planning", stat: "Download CSV/Excel" },
+    { title: "View All Registrations", href: "/admin/registrations", desc: "Full table with search, filter, CSV/Excel download for logistics planning", stat: `${stats.total} registered` },
     { title: "QR Scanner / Check-in", href: "/admin/checkin", desc: "Camera scanner + manual code lookup, idempotent", stat: "Camera API ready" },
     { title: "Programme Manager", href: "/admin/programme", desc: "Create, reorder, publish, archive, ICS/PDF", stat: "10 items seeded" },
     { title: "Materials", href: "/admin/materials", desc: "Upload and release materials to participants", stat: "All registered" },
@@ -75,10 +89,44 @@ export default function AdminPage() {
   return (
     <div className="bg-[#F8F5FF] py-8 min-h-[70vh]">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        {/* Header */}
         <div className="rounded-[24px] bg-[#1A0B2E] text-white p-6 flex flex-wrap items-center justify-between gap-4">
-          <div><h1 className="text-xl font-black">Admin Workspace</h1><p className="text-sm text-white/70">Signed in as <b>{email}</b> • Supabase Auth + RLS + role-based access.</p></div>
+          <div><h1 className="text-xl font-black">Admin Workspace</h1><p className="text-sm text-white/70">Signed in as <b>{email}</b></p></div>
           <span className="rounded-full bg-emerald-400 text-[#1A0B2E] px-3 py-1 text-xs font-black">SIGNED IN</span>
         </div>
+
+        {/* Stats Cards */}
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="rounded-[20px] bg-white border border-purple-100 p-5 flex items-center gap-4">
+            <div className="h-12 w-12 rounded-full bg-[#4C1769] text-white grid place-items-center">
+              <Users className="h-6 w-6" />
+            </div>
+            <div>
+              <div className="text-2xl font-black text-[#1A0B2E]">{stats.total}</div>
+              <div className="text-xs font-bold text-zinc-500">TOTAL REGISTERED</div>
+            </div>
+          </div>
+          <div className="rounded-[20px] bg-white border border-purple-100 p-5 flex items-center gap-4">
+            <div className="h-12 w-12 rounded-full bg-[#0E7C3E] text-white grid place-items-center">
+              <CheckCircle2 className="h-6 w-6" />
+            </div>
+            <div>
+              <div className="text-2xl font-black text-[#0E7C3E]">{stats.physical}</div>
+              <div className="text-xs font-bold text-zinc-500">PHYSICAL</div>
+            </div>
+          </div>
+          <div className="rounded-[20px] bg-white border border-purple-100 p-5 flex items-center gap-4">
+            <div className="h-12 w-12 rounded-full bg-[#B25900] text-white grid place-items-center">
+              <Clock className="h-6 w-6" />
+            </div>
+            <div>
+              <div className="text-2xl font-black text-[#B25900]">{stats.online}</div>
+              <div className="text-xs font-bold text-zinc-500">ONLINE</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Admin Cards */}
         <div className="mt-6 grid md:grid-cols-2 lg:grid-cols-4 gap-4">
           {cards.map((c) => (
             <Link key={c.title} href={c.href} className="rounded-[24px] bg-white border p-5 hover:shadow-lg hover:border-purple-200 transition block">
@@ -88,10 +136,8 @@ export default function AdminPage() {
             </Link>
           ))}
         </div>
-        <div className="mt-6 rounded-2xl bg-white border p-5 text-sm">
-          <b>Security:</b> No public <code>select *</code> on registrations. Public activity via safe view/RPC. .env secrets never in source. Every destructive/bulk action needs confirmation dialog with audience counts.
-        </div>
-        <p className="text-center text-sm mt-4"><Link href="/" className="underline font-bold text-[#4C1769]">Back to site</Link></p>
+
+        <p className="text-center text-sm mt-6"><Link href="/" className="underline font-bold text-[#4C1769]">Back to site</Link></p>
       </div>
     </div>
   );
