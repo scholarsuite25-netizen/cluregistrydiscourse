@@ -10,11 +10,12 @@ export default function DashboardPage() {
   const [qr, setQr] = useState("");
 
   useEffect(() => {
-    const raw = sessionStorage.getItem("clu_session_code") || localStorage.getItem("clu_session");
+    // Check localStorage first (persistent), then sessionStorage
+    const raw = localStorage.getItem("clu_registration") || sessionStorage.getItem("clu_session_code") || localStorage.getItem("clu_session");
     if (raw) {
       const d = JSON.parse(raw);
       setUser(d);
-      const token = d.qr_token || d.qrToken || d.access_code || d.accessCode;
+      const token = d.access_code || d.accessCode;
       QRCode.toDataURL(JSON.stringify({ t: token, e: d.email }), {
         width: 300, margin: 1, color: { dark: "#4C1769", light: "#ffffff" }
       }).then(setQr).catch(() => {});

@@ -43,6 +43,20 @@ export default function RegisterPage() {
     return () => clearTimeout(timer);
   }, [step, countdown, router]);
 
+  // Check if already registered — show code immediately
+  useEffect(() => {
+    const stored = localStorage.getItem("clu_registration");
+    if (stored) {
+      try {
+        const data = JSON.parse(stored);
+        if (data.access_code) {
+          setResult({ ...data, alreadyRegistered: true });
+          setStep("success");
+        }
+      } catch {}
+    }
+  }, []);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErr(null);
@@ -77,8 +91,10 @@ export default function RegisterPage() {
         // Check for duplicate
         const { data: existing } = await sb.from("registrations").select("id").eq("email", payload.email).single();
         if (existing) {
-          // Already registered — just sign them in
+          // Already registered — sign them in and show their code
           const { data: reg } = await sb.from("registrations").select("*").eq("email", payload.email).single();
+          // Store persistently in localStorage
+          localStorage.setItem("clu_registration", JSON.stringify(reg));
           sessionStorage.setItem("clu_session_code", JSON.stringify(reg));
           setResult({ ...reg, alreadyRegistered: true });
           setStep("success");
@@ -90,8 +106,9 @@ export default function RegisterPage() {
         const { error } = await sb.from("registrations").insert(payload);
         if (error) throw new Error(error.message);
 
-        // Store for success page
-        const sessionData = { ...payload, access_code: accessCode };
+        // Store PERSISTENTLY in localStorage (survives tab close)
+        const sessionData = { ...payload, access_code: accessCode, created_at: new Date().toISOString() };
+        localStorage.setItem("clu_registration", JSON.stringify(sessionData));
         sessionStorage.setItem("clu_session_code", JSON.stringify(sessionData));
         setResult({ ...sessionData, alreadyRegistered: false });
 
@@ -114,7 +131,8 @@ export default function RegisterPage() {
         const existing: any[] = JSON.parse(localStorage.getItem("clu_regs") || "[]");
         if (existing.some((r) => r.email === payload.email)) {
           const found = existing.find((r) => r.email === payload.email);
-          sessionStorage.setItem("clu_session", JSON.stringify(found));
+          localStorage.setItem("clu_registration", JSON.stringify(found));
+          localStorage.setItem("clu_session", JSON.stringify(found));
           setResult({ ...found, alreadyRegistered: true });
           setStep("success");
           setLoading(false);
@@ -123,6 +141,7 @@ export default function RegisterPage() {
         const newReg = { ...payload, id: crypto.randomUUID(), created_at: new Date().toISOString() };
         existing.push(newReg);
         localStorage.setItem("clu_regs", JSON.stringify(existing));
+        localStorage.setItem("clu_registration", JSON.stringify(newReg));
         localStorage.setItem("clu_session", JSON.stringify(newReg));
         sessionStorage.setItem("clu_session_code", JSON.stringify(newReg));
         setResult({ ...newReg, alreadyRegistered: false });
@@ -163,12 +182,11 @@ export default function RegisterPage() {
               </p>
             </div>
 
-            {/* Access Code — BIG AND BOLD, FIRST THING */}
+            {/* Access Code — BIG AND BOLD */}
             <div ref={codeRef} className="p-6 text-center">
               <div className="text-xs font-bold tracking-[0.2em] text-[#4C1769] mb-2">YOUR ACCESS CODE</div>
               <div className="text-5xl sm:text-6xl font-black tracking-[0.15em] text-[#4C1769] bg-purple-50 rounded-2xl border-2 border-dashed border-[#C9B676] py-6 px-4 select-all relative">
                 {accessCode}
-                {/* Copy Button */}
                 <button
                   onClick={copyCode}
                   className="absolute top-3 right-3 p-2 rounded-full bg-white border border-purple-200 hover:bg-purple-50 transition"
@@ -188,7 +206,7 @@ export default function RegisterPage() {
 
               <p className="text-sm text-zinc-600 mt-3">
                 <b>Write this down or take a screenshot.</b><br />
-                Use this code to sign in at <b>/portal</b> and check in at the venue.
+                This code is saved on this device — you can always come back to see it.
               </p>
 
               {/* Email status */}
@@ -199,7 +217,7 @@ export default function RegisterPage() {
                   </span>
                 ) : (
                   <span className="inline-flex items-center gap-1 text-zinc-500">
-                    <Mail className="h-4 w-4" /> Sending access code to {result.email}...
+                    <Mail className="h-4 w-4" /> Code saved on this device
                   </span>
                 )}
               </div>
@@ -256,7 +274,6 @@ export default function RegisterPage() {
   return (
     <div className="bg-[#F8F5FF] py-8 min-h-[80vh]">
       <div className="mx-auto max-w-xl px-4">
-        {/* Header */}
         <div className="text-center mb-6">
           <div className="inline-flex items-center gap-2 rounded-full bg-[#4C1769] text-white px-4 py-2 text-sm font-bold">
             <Shield className="h-4 w-4" /> FREE REGISTRATION
@@ -270,7 +287,6 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="rounded-[28px] bg-white border border-purple-100 shadow-xl p-6 sm:p-8 space-y-5">
           {err && (
             <div className="rounded-2xl bg-red-50 border border-red-200 text-red-800 px-4 py-3 text-sm font-semibold">
