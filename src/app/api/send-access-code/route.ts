@@ -95,8 +95,8 @@ export async function POST(req: NextRequest) {
 
     if (!res.ok) {
       const err = await res.text();
-      console.error("[email] Resend error:", err);
-      return NextResponse.json({ ok: true, skipped: true, reason: "Email send failed" });
+      console.error("[email] Resend error:", res.status, err);
+      return NextResponse.json({ ok: true, skipped: true, reason: "Email send failed", detail: err });
     }
 
     return NextResponse.json({ ok: true });
