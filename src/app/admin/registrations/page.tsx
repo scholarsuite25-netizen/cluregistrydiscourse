@@ -23,6 +23,7 @@ export default function AdminRegistrationsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | "Physical" | "Online">("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | "confirmed" | "pending" | "cancelled">("all");
   const [err, setErr] = useState<string | null>(null);
 
   async function loadRegistrations() {
@@ -33,7 +34,6 @@ export default function AdminRegistrationsPage() {
         const sb = getSupabase()!;
         const { data, error } = await sb.from("registrations")
           .select("*")
-          .eq("status", "confirmed")
           .order("created_at", { ascending: false });
         if (error) throw new Error(error.message);
         setRegs(data || []);
@@ -86,12 +86,16 @@ export default function AdminRegistrationsPage() {
       r.institution?.toLowerCase().includes(search.toLowerCase()) ||
       r.access_code?.toLowerCase().includes(search.toLowerCase());
     const matchesFilter = filter === "all" || r.participation_mode === filter;
-    return matchesSearch && matchesFilter;
+    const matchesStatus = statusFilter === "all" || r.status === statusFilter;
+    return matchesSearch && matchesFilter && matchesStatus;
   });
 
   // Stats
   const totalPhysical = regs.filter((r) => r.participation_mode === "Physical").length;
   const totalOnline = regs.filter((r) => r.participation_mode === "Online").length;
+  const totalConfirmed = regs.filter((r) => r.status === "confirmed").length;
+  const totalPending = regs.filter((r) => r.status === "pending").length;
+  const totalCancelled = regs.filter((r) => r.status === "cancelled").length;
 
   // Download CSV
   function downloadCSV() {
@@ -182,21 +186,26 @@ export default function AdminRegistrationsPage() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
           <div className="rounded-2xl bg-white border border-purple-100 p-4">
             <div className="text-xs font-bold tracking-widest text-[#4C1769]">TOTAL</div>
             <div className="text-2xl font-black text-[#1A0B2E]">{regs.length}</div>
             <div className="text-xs text-zinc-500">All registrations</div>
           </div>
           <div className="rounded-2xl bg-white border border-purple-100 p-4">
-            <div className="text-xs font-bold tracking-widest text-[#0E7C3E]">PHYSICAL</div>
-            <div className="text-2xl font-black text-[#0E7C3E]">{totalPhysical}</div>
-            <div className="text-xs text-zinc-500">In-person attendees</div>
+            <div className="text-xs font-bold tracking-widest text-[#0E7C3E]">CONFIRMED</div>
+            <div className="text-2xl font-black text-[#0E7C3E]">{totalConfirmed}</div>
+            <div className="text-xs text-zinc-500">Active participants</div>
           </div>
           <div className="rounded-2xl bg-white border border-purple-100 p-4">
-            <div className="text-xs font-bold tracking-widest text-[#4C1769]">ONLINE</div>
-            <div className="text-2xl font-black text-[#4C1769]">{totalOnline}</div>
-            <div className="text-xs text-zinc-500">Zoom participants</div>
+            <div className="text-xs font-bold tracking-widest text-[#B25900]">PENDING</div>
+            <div className="text-2xl font-black text-[#B25900]">{totalPending}</div>
+            <div className="text-xs text-zinc-500">Awaiting approval</div>
+          </div>
+          <div className="rounded-2xl bg-white border border-purple-100 p-4">
+            <div className="text-xs font-bold tracking-widest text-red-600">CANCELLED</div>
+            <div className="text-2xl font-black text-red-600">{totalCancelled}</div>
+            <div className="text-xs text-zinc-500">Cancelled</div>
           </div>
           <div className="rounded-2xl bg-white border border-purple-100 p-4">
             <div className="text-xs font-bold tracking-widest text-[#C9B676]">SHOWING</div>
@@ -216,7 +225,7 @@ export default function AdminRegistrationsPage() {
               className="w-full rounded-xl border border-zinc-200 pl-10 pr-4 py-3 text-sm bg-white"
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             {["all", "Physical", "Online"].map((f) => (
               <button
                 key={f}
@@ -228,6 +237,25 @@ export default function AdminRegistrationsPage() {
                 }`}
               >
                 {f === "all" ? "All" : f}
+              </button>
+            ))}
+            <span className="text-zinc-300 self-center">|</span>
+            {[
+              { value: "all", label: "All Status", color: "bg-[#4C1769]" },
+              { value: "confirmed", label: "Confirmed", color: "bg-[#0E7C3E]" },
+              { value: "pending", label: "Pending", color: "bg-[#B25900]" },
+              { value: "cancelled", label: "Cancelled", color: "bg-red-600" },
+            ].map((s) => (
+              <button
+                key={s.value}
+                onClick={() => setStatusFilter(s.value as any)}
+                className={`rounded-full px-4 py-2 text-sm font-bold transition ${
+                  statusFilter === s.value
+                    ? `${s.color} text-white`
+                    : "bg-white border border-zinc-200 text-zinc-700 hover:bg-purple-50"
+                }`}
+              >
+                {s.label}
               </button>
             ))}
           </div>
@@ -307,11 +335,15 @@ export default function AdminRegistrationsPage() {
                         <select
                           value={r.status}
                           onChange={(e) => updateStatus(r.id, e.target.value)}
-                          className="rounded-lg border border-zinc-200 px-2 py-1 text-xs font-bold bg-white"
+                          className={`rounded-lg border px-2 py-1 text-xs font-bold ${
+                            r.status === "confirmed" ? "bg-emerald-50 border-emerald-200 text-emerald-700" :
+                            r.status === "pending" ? "bg-amber-50 border-amber-200 text-amber-700" :
+                            "bg-red-50 border-red-200 text-red-700"
+                          }`}
                         >
                           <option value="confirmed">Confirmed</option>
-                          <option value="cancelled">Cancelled</option>
                           <option value="pending">Pending</option>
+                          <option value="cancelled">Cancelled</option>
                         </select>
                       </td>
                       <td className="px-4 py-3">
