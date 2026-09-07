@@ -1,11 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
 import { EVENT } from "@/lib/constants";
 import { generateAccessCode } from "@/lib/validation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { CheckCircle2, ArrowRight, Shield } from "lucide-react";
+import { CheckCircle2, ArrowRight, Shield, Copy, Check, Mail } from "lucide-react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -13,6 +13,10 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [result, setResult] = useState<any>(null);
+  const [copied, setCopied] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [countdown, setCountdown] = useState(10);
+  const codeRef = useRef<HTMLDivElement>(null);
 
   const [form, setForm] = useState({
     firstName: "",
@@ -28,11 +32,21 @@ export default function RegisterPage() {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
+  // Auto-redirect countdown
+  useEffect(() => {
+    if (step !== "success") return;
+    if (countdown <= 0) {
+      router.push("/portal/dashboard");
+      return;
+    }
+    const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [step, countdown, router]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErr(null);
 
-    // Minimal validation
     if (!form.firstName.trim()) { setErr("Please enter your first name"); return; }
     if (!form.surname.trim()) { setErr("Please enter your surname"); return; }
     if (!form.email.trim()) { setErr("Please enter your email"); return; }
@@ -72,13 +86,29 @@ export default function RegisterPage() {
           return;
         }
 
-        // New registration — no auth user needed, access code is the key
+        // New registration
         const { error } = await sb.from("registrations").insert(payload);
         if (error) throw new Error(error.message);
 
         // Store for success page
-        sessionStorage.setItem("clu_session_code", JSON.stringify({ ...payload, access_code: accessCode }));
-        setResult({ ...payload, access_code: accessCode, alreadyRegistered: false });
+        const sessionData = { ...payload, access_code: accessCode };
+        sessionStorage.setItem("clu_session_code", JSON.stringify(sessionData));
+        setResult({ ...sessionData, alreadyRegistered: false });
+
+        // Send access code email (fire and forget)
+        fetch("/api/send-access-code", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: payload.email,
+            firstName: payload.first_name,
+            surname: payload.surname,
+            accessCode: accessCode,
+            participationMode: payload.participation_mode,
+          }),
+        }).then((res) => res.json()).then((data) => {
+          if (data.ok) setEmailSent(true);
+        }).catch(() => {});
       } else {
         // Local fallback
         const existing: any[] = JSON.parse(localStorage.getItem("clu_regs") || "[]");
@@ -95,7 +125,7 @@ export default function RegisterPage() {
         localStorage.setItem("clu_regs", JSON.stringify(existing));
         localStorage.setItem("clu_session", JSON.stringify(newReg));
         sessionStorage.setItem("clu_session_code", JSON.stringify(newReg));
-        setResult(newReg);
+        setResult({ ...newReg, alreadyRegistered: false });
       }
 
       setStep("success");
@@ -105,8 +135,17 @@ export default function RegisterPage() {
     setLoading(false);
   }
 
+  function copyCode() {
+    const code = result?.access_code || result?.accessCode || "";
+    navigator.clipboard.writeText(code).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    });
+  }
+
   // SUCCESS STEP
   if (step === "success" && result) {
+    const accessCode = result.access_code || result.accessCode;
     return (
       <div className="bg-[#F8F5FF] py-8 min-h-[80vh]">
         <div className="mx-auto max-w-2xl px-4">
@@ -115,33 +154,55 @@ export default function RegisterPage() {
             <div className="bg-[#0E7C3E] text-white p-6 text-center">
               <CheckCircle2 className="h-16 w-16 mx-auto mb-3" />
               <h1 className="text-2xl sm:text-3xl font-black">
-                {result.alreadyRegistered ? "Welcome Back!" : "You're Registered!"}
+                {result.alreadyRegistered ? "Welcome Back!" : "Registration Successful!"}
               </h1>
               <p className="text-white/80 mt-1">
                 {result.alreadyRegistered
                   ? "You already have an account. Here's your access code."
-                  : "Your access pass is ready. Save this code — you'll need it to sign in."}
+                  : "Your access pass is ready. Save this code now!"}
               </p>
             </div>
 
-            {/* Access Code — BIG AND BOLD */}
-            <div className="p-6 text-center">
+            {/* Access Code — BIG AND BOLD, FIRST THING */}
+            <div ref={codeRef} className="p-6 text-center">
               <div className="text-xs font-bold tracking-[0.2em] text-[#4C1769] mb-2">YOUR ACCESS CODE</div>
-              <div className="text-5xl sm:text-6xl font-black tracking-[0.15em] text-[#4C1769] bg-purple-50 rounded-2xl border-2 border-dashed border-[#C9B676] py-6 px-4 select-all">
-                {result.access_code || result.accessCode}
+              <div className="text-5xl sm:text-6xl font-black tracking-[0.15em] text-[#4C1769] bg-purple-50 rounded-2xl border-2 border-dashed border-[#C9B676] py-6 px-4 select-all relative">
+                {accessCode}
+                {/* Copy Button */}
+                <button
+                  onClick={copyCode}
+                  className="absolute top-3 right-3 p-2 rounded-full bg-white border border-purple-200 hover:bg-purple-50 transition"
+                  title="Copy code"
+                >
+                  {copied ? (
+                    <Check className="h-4 w-4 text-[#0E7C3E]" />
+                  ) : (
+                    <Copy className="h-4 w-4 text-[#4C1769]" />
+                  )}
+                </button>
               </div>
+
+              {copied && (
+                <p className="text-sm text-[#0E7C3E] font-bold mt-2">✓ Code copied to clipboard!</p>
+              )}
+
               <p className="text-sm text-zinc-600 mt-3">
                 <b>Write this down or take a screenshot.</b><br />
-                Use this code to sign in anytime at <b>/portal</b>
+                Use this code to sign in at <b>/portal</b> and check in at the venue.
               </p>
 
-              {/* QR Code */}
-              <div className="mt-6 inline-block bg-white border-4 border-[#4C1769] rounded-2xl p-2">
-                <div className="w-48 h-48 bg-purple-50 rounded-xl flex items-center justify-center">
-                  <span className="text-xs text-zinc-500 text-center">QR Code<br />for check-in</span>
-                </div>
+              {/* Email status */}
+              <div className="mt-4 flex items-center justify-center gap-2 text-sm">
+                {emailSent ? (
+                  <span className="inline-flex items-center gap-1 text-[#0E7C3E] font-bold">
+                    <Mail className="h-4 w-4" /> Access code sent to {result.email}
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 text-zinc-500">
+                    <Mail className="h-4 w-4" /> Sending access code to {result.email}...
+                  </span>
+                )}
               </div>
-              <p className="text-xs text-zinc-500 mt-2">Show this at the door on {EVENT.date}</p>
             </div>
 
             {/* What you can access */}
@@ -172,6 +233,12 @@ export default function RegisterPage() {
               >
                 Go to My Dashboard <ArrowRight className="h-5 w-5" />
               </button>
+              <div className="text-center text-sm text-zinc-500">
+                Auto-redirect in {countdown}s... or{" "}
+                <button onClick={() => router.push("/portal/dashboard")} className="font-bold text-[#4C1769] underline">
+                  click here
+                </button>
+              </div>
               <Link
                 href="/"
                 className="block w-full rounded-full border-2 border-[#4C1769] text-[#4C1769] py-3 text-center font-bold"
@@ -185,7 +252,7 @@ export default function RegisterPage() {
     );
   }
 
-  // REGISTRATION FORM — SIMPLE, BIG, CLEAR
+  // REGISTRATION FORM
   return (
     <div className="bg-[#F8F5FF] py-8 min-h-[80vh]">
       <div className="mx-auto max-w-xl px-4">
@@ -211,7 +278,6 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* Name — big fields */}
           <div>
             <label className="text-sm font-bold text-[#4C1769]">First Name</label>
             <input
@@ -274,7 +340,6 @@ export default function RegisterPage() {
             />
           </div>
 
-          {/* Participation — big toggle */}
           <div>
             <label className="text-sm font-bold text-[#4C1769]">How will you attend?</label>
             <div className="mt-2 grid grid-cols-2 gap-3">
@@ -299,7 +364,6 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          {/* Consent — simple checkbox */}
           <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4">
             <label className="flex gap-3 text-sm cursor-pointer">
               <input type="checkbox" required className="mt-1 h-5 w-5 accent-[#4C1769]" />
@@ -309,7 +373,6 @@ export default function RegisterPage() {
             </label>
           </div>
 
-          {/* Submit — BIG BUTTON */}
           <button
             type="submit"
             disabled={loading}
