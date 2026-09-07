@@ -91,13 +91,20 @@ export default function RegisterPage() {
         // Check for duplicate
         const { data: existing } = await sb.from("registrations").select("id").eq("email", payload.email).single();
         if (existing) {
-          // Already registered — sign them in and show their code
+          // Already registered — show their code with a clear message
           const { data: reg } = await sb.from("registrations").select("*").eq("email", payload.email).single();
-          // Store persistently in localStorage
           localStorage.setItem("clu_registration", JSON.stringify(reg));
           sessionStorage.setItem("clu_session_code", JSON.stringify(reg));
           setResult({ ...reg, alreadyRegistered: true });
           setStep("success");
+          setLoading(false);
+          return;
+        }
+
+        // New registration — block if phone already used
+        const { data: phoneExists } = await sb.from("registrations").select("id").eq("phone", payload.phone).single();
+        if (phoneExists) {
+          setErr("This phone number is already registered. Use your access code to sign in at /portal");
           setLoading(false);
           return;
         }
