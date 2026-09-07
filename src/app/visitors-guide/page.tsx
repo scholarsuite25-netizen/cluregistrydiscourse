@@ -28,10 +28,10 @@ const DIRECTIONS = [
     steps: [
       "Enter Lagos–Ibadan Expressway from Ibadan (Mokola / UI area)",
       "Drive towards Lagos on the expressway",
-      "At Sagamu Interchange, turn left onto Abeokuta–Sagamu Expressway",
+      "At Sagamu Interchange, turn right onto Abeokuta–Sagamu Expressway",
       "Continue towards Abeokuta on the expressway",
-      "Pass NNPC Filling Station on your left",
-      "Continue past Iyana Mortuary area",
+      "Turn to NNPC Filling Station on your right towards Abiola Way",
+      "At Iyana Mortuary Area, turn right to Idi Aba Road, along FMC",
       "Pass Federal Medical Centre (FMC) on your right",
       "Continue straight — Chrisland University is on your left",
       "Estimated time: 1 – 1.5 hours from Ibadan city centre"
