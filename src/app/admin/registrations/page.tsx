@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
-import { Download, Search, Users, Filter, ArrowLeft, RefreshCw, CheckCircle2, Clock, Mail, Phone, Building2 } from "lucide-react";
+import { Download, Search, Users, Filter, RefreshCw, CheckCircle2, Clock, Mail, Phone, Building2, Pencil, Trash2, Save, X } from "lucide-react";
 
 type Registration = {
   id: string;
@@ -50,6 +49,33 @@ export default function AdminRegistrationsPage() {
   }
 
   useEffect(() => { loadRegistrations(); }, []);
+
+  async function deleteRegistration(id: string) {
+    if (!confirm("Delete this registration? This cannot be undone.")) return;
+    try {
+      if (isSupabaseConfigured) {
+        const sb = getSupabase()!;
+        const { error } = await sb.from("registrations").delete().eq("id", id);
+        if (error) throw new Error(error.message);
+        await loadRegistrations();
+      }
+    } catch (e: any) {
+      setErr(e.message);
+    }
+  }
+
+  async function updateStatus(id: string, newStatus: string) {
+    try {
+      if (isSupabaseConfigured) {
+        const sb = getSupabase()!;
+        const { error } = await sb.from("registrations").update({ status: newStatus }).eq("id", id);
+        if (error) throw new Error(error.message);
+        await loadRegistrations();
+      }
+    } catch (e: any) {
+      setErr(e.message);
+    }
+  }
 
   // Filter and search
   const filtered = regs.filter((r) => {
@@ -139,9 +165,6 @@ export default function AdminRegistrationsPage() {
         {/* Header */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-sm text-[#4C1769] font-bold mb-2">
-              <ArrowLeft className="h-4 w-4" /> Back to Admin
-            </Link>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#1A0B2E]">Registered Participants</h1>
             <p className="text-sm text-zinc-600 mt-1">Logistics planning — {totalPhysical} Physical + {totalOnline} Online = {regs.length} total</p>
           </div>
@@ -241,7 +264,8 @@ export default function AdminRegistrationsPage() {
                     <th className="px-4 py-3 text-left font-bold">Designation</th>
                     <th className="px-4 py-3 text-left font-bold">Mode</th>
                     <th className="px-4 py-3 text-left font-bold">Access Code</th>
-                    <th className="px-4 py-3 text-left font-bold">Date</th>
+                    <th className="px-4 py-3 text-left font-bold">Status</th>
+                    <th className="px-4 py-3 text-left font-bold">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -279,8 +303,21 @@ export default function AdminRegistrationsPage() {
                       <td className="px-4 py-3">
                         <span className="font-mono font-bold text-[#4C1769] tracking-wider">{r.access_code}</span>
                       </td>
-                      <td className="px-4 py-3 text-zinc-500 text-xs">
-                        {new Date(r.created_at).toLocaleDateString()}
+                      <td className="px-4 py-3">
+                        <select
+                          value={r.status}
+                          onChange={(e) => updateStatus(r.id, e.target.value)}
+                          className="rounded-lg border border-zinc-200 px-2 py-1 text-xs font-bold bg-white"
+                        >
+                          <option value="confirmed">Confirmed</option>
+                          <option value="cancelled">Cancelled</option>
+                          <option value="pending">Pending</option>
+                        </select>
+                      </td>
+                      <td className="px-4 py-3">
+                        <button onClick={() => deleteRegistration(r.id)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-600" title="Delete">
+                          <Trash2 className="h-4 w-4" />
+                        </button>
                       </td>
                     </tr>
                   ))}

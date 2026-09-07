@@ -26,6 +26,7 @@ export default function AdminPage() {
       if (!adminRole) { setErr("This account is not an admin. Use the participant portal."); setLoading(false); return; }
       sessionStorage.setItem("clu_admin_role", adminRole.role);
       sessionStorage.setItem("clu_admin_id", data.user.id);
+      sessionStorage.setItem("clu_admin_email", email);
       setSignedIn(true);
     } else {
       setErr("Supabase not configured — admin requires live database.");
@@ -82,8 +83,8 @@ export default function AdminPage() {
     { title: "Materials", href: "/admin/materials", desc: "Upload and release materials to participants", stat: "All registered" },
     { title: "People & LOC", href: "/admin/loc", desc: "Edit lecturer title, photos, LOC CRUD", stat: "0 LOC — correct" },
     { title: "Manage Hotels", href: "/admin/hotels", desc: "Add, edit, remove hotels shown on Visitors Guide page", stat: "Dynamic from DB" },
-    { title: "Communications", href: "/admin", desc: "Announcements, campaigns, consent, idempotency", stat: "Email/Push/WhatsApp adapters" },
     { title: "Certificates", href: "/admin/certificates", desc: "Template, bulk issue, serial+QR, revoke/reissue", stat: "Verification: /certificate/verify/[serial]" },
+    { title: "Admin Users", href: "/admin/users", desc: "Add, edit, delete admin users and assign roles", stat: "3 users" },
   ];
 
   return (

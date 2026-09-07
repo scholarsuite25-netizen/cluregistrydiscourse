@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
-import { ArrowLeft, Plus, Pencil, Trash2, Save, X, Star, Phone, MapPin, RefreshCw } from "lucide-react";
+import { Plus, Pencil, Trash2, Save, X, Star, Phone, MapPin, RefreshCw } from "lucide-react";
 
 type Hotel = {
   id: string;
@@ -135,9 +134,6 @@ export default function AdminHotelsPage() {
         {/* Header */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-sm text-[#4C1769] font-bold mb-2">
-              <ArrowLeft className="h-4 w-4" /> Back to Admin
-            </Link>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#1A0B2E]">Manage Hotels</h1>
             <p className="text-sm text-zinc-600 mt-1">Add, edit, or remove hotels shown on the Visitors Guide page.</p>
           </div>
