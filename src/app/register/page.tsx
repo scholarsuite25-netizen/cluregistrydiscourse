@@ -41,7 +41,6 @@ export default function RegisterPage() {
 
     setLoading(true);
     const accessCode = generateAccessCode(8);
-    const qrToken = generateAccessCode(12) + generateAccessCode(12);
 
     const payload = {
       first_name: form.firstName.trim(),
@@ -55,7 +54,6 @@ export default function RegisterPage() {
       public_activity_opt_in: true,
       status: "confirmed",
       access_code: accessCode,
-      qr_token: qrToken,
     };
 
     try {
@@ -79,8 +77,8 @@ export default function RegisterPage() {
         if (error) throw new Error(error.message);
 
         // Store for success page
-        sessionStorage.setItem("clu_session_code", JSON.stringify({ ...payload, access_code: accessCode, qr_token: qrToken }));
-        setResult({ ...payload, access_code: accessCode, qr_token: qrToken, alreadyRegistered: false });
+        sessionStorage.setItem("clu_session_code", JSON.stringify({ ...payload, access_code: accessCode }));
+        setResult({ ...payload, access_code: accessCode, alreadyRegistered: false });
       } else {
         // Local fallback
         const existing: any[] = JSON.parse(localStorage.getItem("clu_regs") || "[]");
