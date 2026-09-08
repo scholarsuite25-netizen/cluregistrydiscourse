@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
-import { Plus, Pencil, Trash2, Save, X, RefreshCw, Users, User } from "lucide-react";
+import { Plus, Pencil, Trash2, Save, X, RefreshCw, Users } from "lucide-react";
 
 type LOCMember = {
   id: string;
@@ -9,17 +9,17 @@ type LOCMember = {
   department: string;
   committee_role: string;
   display_order: number;
-  published: boolean;
 };
 
 export default function AdminLOCPage() {
   const [members, setMembers] = useState<LOCMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
-  const [editing, setEditing] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
-  const [form, setForm] = useState({ full_name: "", department: "", committee_role: "", published: true });
+  const [editing, setEditing] = useState<string | null>(null);
+  const [form, setForm] = useState({ full_name: "", department: "", committee_role: "" });
   const [saving, setSaving] = useState(false);
+  const [tableReady, setTableReady] = useState(false);
 
   async function loadMembers() {
     setLoading(true);
@@ -28,8 +28,14 @@ export default function AdminLOCPage() {
       if (isSupabaseConfigured) {
         const sb = getSupabase()!;
         const { data, error } = await sb.from("organising_committee_members").select("*").order("display_order", { ascending: true });
-        if (error) throw new Error(error.message);
+        if (error) {
+          setErr("Table setup needed: " + error.message);
+          setTableReady(false);
+          setLoading(false);
+          return;
+        }
         setMembers(data || []);
+        setTableReady(true);
       }
     } catch (e: any) {
       setErr(e.message);
@@ -46,17 +52,26 @@ export default function AdminLOCPage() {
       if (!form.full_name) throw new Error("Full name is required");
       if (isSupabaseConfigured) {
         const sb = getSupabase()!;
-        const maxOrder = members.length > 0 ? Math.max(...members.map((m) => m.display_order)) + 1 : 0;
+        const maxOrder = members.length > 0 ? Math.max(...members.map((m) => m.display_order || 0)) + 1 : 0;
         if (editing) {
-          const { error } = await sb.from("organising_committee_members").update(form).eq("id", editing);
+          const { error } = await sb.from("organising_committee_members").update({
+            full_name: form.full_name,
+            department: form.department,
+            committee_role: form.committee_role,
+          }).eq("id", editing);
           if (error) throw new Error(error.message);
         } else {
-          const { error } = await sb.from("organising_committee_members").insert([{ ...form, display_order: maxOrder }]);
+          const { error } = await sb.from("organising_committee_members").insert([{
+            full_name: form.full_name,
+            department: form.department,
+            committee_role: form.committee_role,
+            display_order: maxOrder,
+          }]);
           if (error) throw new Error(error.message);
         }
         setAdding(false);
         setEditing(null);
-        setForm({ full_name: "", department: "", committee_role: "", published: true });
+        setForm({ full_name: "", department: "", committee_role: "" });
         await loadMembers();
       }
     } catch (e: any) {
@@ -82,7 +97,7 @@ export default function AdminLOCPage() {
   function startEdit(m: LOCMember) {
     setEditing(m.id);
     setAdding(false);
-    setForm({ full_name: m.full_name, department: m.department, committee_role: m.committee_role, published: m.published });
+    setForm({ full_name: m.full_name || "", department: m.department || "", committee_role: m.committee_role || "" });
   }
 
   return (
@@ -94,11 +109,24 @@ export default function AdminLOCPage() {
         </div>
         <div className="flex gap-2">
           <button onClick={loadMembers} className="inline-flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-sm font-bold"><RefreshCw className="h-4 w-4" /> Refresh</button>
-          <button onClick={() => { setAdding(true); setEditing(null); setForm({ full_name: "", department: "", committee_role: "", published: true }); }} className="inline-flex items-center gap-2 rounded-full bg-[#4C1769] text-white px-4 py-2 text-sm font-bold"><Plus className="h-4 w-4" /> Add Member</button>
+          {tableReady && (
+            <button onClick={() => { setAdding(true); setEditing(null); setForm({ full_name: "", department: "", committee_role: "" }); }} className="inline-flex items-center gap-2 rounded-full bg-[#4C1769] text-white px-4 py-2 text-sm font-bold"><Plus className="h-4 w-4" /> Add Member</button>
+          )}
         </div>
       </div>
 
-      {err && <div className="rounded-2xl bg-red-50 border border-red-200 text-red-800 px-4 py-3 text-sm mb-6">{err}</div>}
+      {err && (
+        <div className="rounded-2xl bg-red-50 border border-red-200 text-red-800 px-4 py-3 text-sm mb-6">
+          <p className="font-bold">Error</p>
+          <p>{err}</p>
+          <p className="mt-2 text-xs">Run this in Supabase SQL Editor:</p>
+          <pre className="mt-1 bg-red-100 p-2 rounded text-xs overflow-auto">
+{`ALTER TABLE organising_committee_members ADD COLUMN IF NOT EXISTS department TEXT DEFAULT '';
+ALTER TABLE organising_committee_members ADD COLUMN IF NOT EXISTS committee_role TEXT DEFAULT '';
+ALTER TABLE organising_committee_members ADD COLUMN IF NOT EXISTS display_order INTEGER DEFAULT 0;`}
+          </pre>
+        </div>
+      )}
 
       {(adding || editing) && (
         <div className="rounded-[24px] bg-white border border-purple-100 shadow-lg p-6 mb-6">
@@ -118,7 +146,11 @@ export default function AdminLOCPage() {
       {loading ? (
         <div className="rounded-[24px] bg-white border border-purple-100 p-12 text-center"><RefreshCw className="h-8 w-8 animate-spin text-[#4C1769] mx-auto" /></div>
       ) : members.length === 0 ? (
-        <div className="rounded-[24px] bg-white border border-purple-100 p-12 text-center"><Users className="h-12 w-12 text-zinc-300 mx-auto" /><p className="text-lg font-bold text-zinc-600 mt-3">No committee members yet</p><p className="text-sm text-zinc-500 mt-1">Add the first member above.</p></div>
+        <div className="rounded-[24px] bg-white border border-purple-100 p-12 text-center">
+          <Users className="h-12 w-12 text-zinc-300 mx-auto" />
+          <p className="text-lg font-bold text-zinc-600 mt-3">No committee members yet</p>
+          <p className="text-sm text-zinc-500 mt-1">{tableReady ? "Add the first member above." : "Run the SQL above to set up the table, then refresh."}</p>
+        </div>
       ) : (
         <div className="rounded-[24px] bg-white border border-purple-100 overflow-hidden">
           <table className="w-full text-sm">
