@@ -1,19 +1,20 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
-import { LayoutDashboard, Users, CalendarCheck, FileText, FolderOpen, MapPin, Award, ArrowLeft, LogOut, ChevronRight } from "lucide-react";
+import { LayoutDashboard, Users, CalendarCheck, FileText, FolderOpen, MapPin, Award, LogOut, ChevronRight, Shield, UserCheck } from "lucide-react";
 
 const NAV_ITEMS = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard, roles: ["super_admin", "content_admin", "checkin_staff"] },
-  { href: "/admin/registrations", label: "Registrations", icon: Users, roles: ["super_admin", "content_admin", "checkin_staff"] },
-  { href: "/admin/checkin", label: "Check-in", icon: CalendarCheck, roles: ["super_admin", "content_admin", "checkin_staff"] },
-  { href: "/admin/programme", label: "Programme", icon: FileText, roles: ["super_admin", "content_admin", "checkin_staff"] },
-  { href: "/admin/materials", label: "Materials", icon: FolderOpen, roles: ["super_admin", "content_admin", "checkin_staff"] },
-  { href: "/admin/loc", label: "People & LOC", icon: Users, roles: ["super_admin", "content_admin", "checkin_staff"] },
-  { href: "/admin/hotels", label: "Hotels", icon: MapPin, roles: ["super_admin", "content_admin", "checkin_staff"] },
-  { href: "/admin/certificates", label: "Certificates", icon: Award, roles: ["super_admin", "content_admin", "checkin_staff"] },
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/registrations", label: "Registrations", icon: Users },
+  { href: "/admin/checkin", label: "Check-in", icon: CalendarCheck },
+  { href: "/admin/programme", label: "Programme", icon: FileText },
+  { href: "/admin/materials", label: "Materials", icon: FolderOpen },
+  { href: "/admin/loc", label: "People & LOC", icon: Users },
+  { href: "/admin/hotels", label: "Hotels", icon: MapPin },
+  { href: "/admin/certificates", label: "Certificates", icon: Award },
+  { href: "/admin/users", label: "Admin Users", icon: Shield },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -24,23 +25,63 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const router = useRouter();
 
-  useEffect(() => {
+  const checkAuth = useCallback(async () => {
+    // First check sessionStorage (fast path)
     const savedRole = sessionStorage.getItem("clu_admin_role");
     const savedEmail = sessionStorage.getItem("clu_admin_email");
     if (savedRole) {
       setRole(savedRole);
       setEmail(savedEmail);
+      setChecking(false);
+      return;
     }
+
+    // If no session storage, check Supabase session
+    if (isSupabaseConfigured) {
+      try {
+        const sb = getSupabase()!;
+        const { data: { session } } = await sb.auth.getSession();
+        if (session?.user) {
+          const { data: adminRole } = await sb.from("admin_users").select("role").eq("id", session.user.id).single();
+          if (adminRole) {
+            sessionStorage.setItem("clu_admin_role", adminRole.role);
+            sessionStorage.setItem("clu_admin_id", session.user.id);
+            sessionStorage.setItem("clu_admin_email", session.user.email || "");
+            setRole(adminRole.role);
+            setEmail(session.user.email || null);
+            setChecking(false);
+            return;
+          }
+        }
+      } catch {}
+    }
+
     setChecking(false);
   }, []);
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   // Login page has its own auth — skip check for /admin root
   if (pathname === "/admin") {
     return <>{children}</>;
   }
 
+  // Still checking — show loading
+  if (checking) {
+    return (
+      <div className="bg-[#F8F5FF] min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="h-8 w-8 border-4 border-[#4C1769] border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-sm text-zinc-600 mt-3">Verifying access...</p>
+        </div>
+      </div>
+    );
+  }
+
   // Not logged in — redirect to admin login
-  if (!checking && !role) {
+  if (!role) {
     router.replace("/admin");
     return null;
   }
@@ -55,7 +96,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     router.replace("/admin");
   }
 
-  const visibleNav = NAV_ITEMS.filter((item) => !role || item.roles.includes(role));
+  const visibleNav = NAV_ITEMS;
   const currentPage = NAV_ITEMS.find((item) => pathname === item.href || pathname.startsWith(item.href + "/"));
 
   return (
@@ -112,6 +153,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               );
             })}
           </nav>
+          <div className="mt-6 pt-4 border-t border-zinc-100">
+            <button onClick={handleLogout} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 w-full transition">
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </button>
+          </div>
         </aside>
 
         {/* Sidebar — mobile overlay */}
@@ -145,6 +192,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   );
                 })}
               </nav>
+              <div className="mt-6 pt-4 border-t border-zinc-100">
+                <button onClick={() => { handleLogout(); setSidebarOpen(false); }} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 w-full transition">
+                  <LogOut className="h-4 w-4" />
+                  Sign Out
+                </button>
+              </div>
             </aside>
           </div>
         )}

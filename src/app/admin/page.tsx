@@ -39,9 +39,9 @@ export default function AdminPage() {
     if (!signedIn || !isSupabaseConfigured) return;
     async function fetchStats() {
       const sb = getSupabase()!;
-      const { count: total } = await sb.from("registrations").select("*", { count: "exact", head: true }).eq("status", "confirmed");
-      const { count: physical } = await sb.from("registrations").select("*", { count: "exact", head: true }).eq("status", "confirmed").eq("participation_mode", "Physical");
-      const { count: online } = await sb.from("registrations").select("*", { count: "exact", head: true }).eq("status", "confirmed").eq("participation_mode", "Online");
+      const { count: total } = await sb.from("registrations").select("*", { count: "exact", head: true });
+      const { count: physical } = await sb.from("registrations").select("*", { count: "exact", head: true }).eq("participation_mode", "Physical");
+      const { count: online } = await sb.from("registrations").select("*", { count: "exact", head: true }).eq("participation_mode", "Online");
       setStats({ total: total || 0, physical: physical || 0, online: online || 0 });
     }
     fetchStats();
