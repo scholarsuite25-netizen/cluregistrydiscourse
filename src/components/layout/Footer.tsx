@@ -47,7 +47,14 @@ export function Footer() {
         </div>
         <div className="mt-10 flex flex-col md:flex-row items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/60">
           <span>© 2026 Chrisland University, Abeokuta. Registry Discourse. All rights reserved.</span>
-          <span className="text-[#C9B676] font-semibold">Built with dignity • Designed for Nigeria’s low-bandwidth reality</span>
+          <span className="text-[#C9B676] font-semibold flex flex-wrap items-center gap-2">
+            Designed and powered by{" "}
+            <a href="tel:+2348034710699" className="text-white underline decoration-[#C9B676]/50 underline-offset-2 hover:text-[#C9B676] transition">S. B. Omotoso</a>
+            <span className="flex items-center gap-1">
+              <a href="tel:+2348034710699" className="inline-flex items-center gap-1 rounded-full border border-[#C9B676]/40 text-[#C9B676] px-2.5 py-1 hover:bg-[#C9B676] hover:text-[#1A0B2E] transition"><Phone className="h-3 w-3" /> Call</a>
+              <a href={`https://wa.me/2348034710699?text=${encodeURIComponent("Hello, I am contacting you regarding the CLU Registry Discourse.")}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full bg-[#25D366] text-white px-2.5 py-1 hover:opacity-90 transition"><MessageCircle className="h-3 w-3" /> WhatsApp</a>
+            </span>
+          </span>
         </div>
       </div>
     </footer>
