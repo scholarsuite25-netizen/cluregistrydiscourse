@@ -41,9 +41,9 @@ export default function PeoplePage() {
           {PEOPLE.map((p) => (
             <div key={p.slug} className="rounded-[24px] bg-white border border-purple-100 shadow-lg overflow-hidden">
               <div className="flex">
-                {/* Photo — left side, text wraps around */}
-                <div className="relative w-36 shrink-0 min-h-[144px]">
-                  <Image src={p.photo} alt={p.name} width={144} height={144} className="h-full w-full object-cover" />
+                {/* Photo — fixed 2x2 square, text wraps around */}
+                <div className="relative w-36 h-36 shrink-0">
+                  <Image src={p.photo} alt={p.name} fill sizes="144px" className="object-cover" />
                   <span className="absolute bottom-0 left-0 right-0 bg-[#4C1769]/85 text-white text-center text-[10px] py-1.5 font-bold">{p.badge}</span>
                 </div>
                 {/* Text wraps around the photo */}
