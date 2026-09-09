@@ -28,14 +28,14 @@ export const BRAND = {
 
 export const PEOPLE = [
   {
-    slug: "ayodeji-olukoju",
-    name: "Distinguished Professor Ayodeji O. Olukoju, FNAL",
-    role: "Chairman of the Day — Pro-Chancellor & Chairman, Governing Council, Chrisland University",
+    slug: "bowo-olateru-olangbegi",
+    name: "Prince Bowo Olateru-Olagbegi, BSc, FCA",
+    role: "Chairman of the Day — Member, Governing Council, Chrisland University",
     badge: "Chairman",
-    excerpt: "Professor of History and Fellow of the Nigerian Academy of Letters. Scholarship spans maritime, transport, economic, social, corporate, and urban history. Former Vice-Chancellor of Caleb University.",
-    bio: "Distinguished Professor Ayodeji Oladimeji Olukoju is a Professor of History and Fellow of the Nigerian Academy of Letters. His scholarship spans maritime, transport, economic, social, corporate, and urban history. He previously served as Vice-Chancellor of Caleb University and holds senior academic and university governance experience.",
-    initials: "AO",
-    photo: "/people/ayodeji-olukoju.png",
+    excerpt: "Public speaker, successful businessman, Fellow of the Institute of Chartered Accountants of Nigeria and graduate of the University of Lagos. Serves on the boards of several companies and is Chairman of Asherlogic Ltd, Bono Foods Ltd, Olbot Inc and COPAD.",
+    bio: "Prince Bowo Olateru-Olagbegi, BSc, FCA is a public speaker and a successful businessman. He is a Fellow of the Institute of Chartered Accountants of Nigeria and a graduate of the University of Lagos, Nigeria. He serves on the boards of a range of companies including Cards Technology Ltd, CALM IT Global Ltd, Micfade (W.A) Ltd, Rolbotech Solutions Limited, TWPC Tech Ltd and many others. He has attended many conferences and participated in different leadership programs. He works with many organizations as a consultant, using his technical competencies and skills to meet the goals and objectives of the organizations. With years of experience as an information consultant, he successfully interacts with a diverse group of end users in different spheres, to navigate, train and advise on diverse matters. He has an outstanding track record of efficiency and effectiveness in managing communications and customer relationships. An independent thinker with proven AI and computer/information technology competency, strong communication skills and the ability to organize and plan successfully. He is accustomed to a fast-paced work environment, dealing with a variety of tasks and responsibilities in an efficient and accurate manner. He is Chairman of Asherlogic Ltd, an information technology company, as well as Bono Foods Ltd. He was a member of the Board of Coordinators of RCCGNA. He is Chairman of Olbot Inc, a healthcare services company based in the USA. He is the Chairman of COPAD, an NGO that promotes public accountability and development. He is a member of the Governing Council of Chrisland University, Nigeria. He has authored a number of books, including 'Corruption Talks', a conversation-style exposition on the ills of corruption, as well as 'Thought Transformers', among others.",
+    initials: "BO",
+    photo: "/people/bowo-olateru-olangbegi.png",
     flip: false,
   },
   {
@@ -79,7 +79,7 @@ export const PROGRAMME = [
   { time: "09:00 – 09:20", title: "Opening & National Anthem", speaker: "University Anthem / Protocol", venue: "Main Auditorium", desc: "Welcome, introductions and opening prayers." },
   { time: "09:20 – 09:35", title: "Welcome Address", speaker: "Mr. S. B. Omotoso — Registrar", venue: "Main Auditorium", desc: "Host remarks and discourse framing." },
   { time: "09:35 – 09:50", title: "Chief Host Address", speaker: "Prof. Oyedunni Sola Arulogun — Vice-Chancellor", venue: "Main Auditorium", desc: "Vision for governance and service." },
-  { time: "09:50 – 10:05", title: "Chairman's Opening Remarks", speaker: "Dist. Prof. Ayodeji Olukoju — Pro-Chancellor", venue: "Main Auditorium", desc: "Contextualising change in higher education management." },
+  { time: "09:50 – 10:05", title: "Chairman's Opening Remarks", speaker: "Prince Bowo Olateru-Olagbegi — Governing Council Member", venue: "Main Auditorium", desc: "Contextualising change in higher education management." },
   { time: "10:05 – 11:00", title: "Keynote: Governance, Innovation & Service", speaker: "Chief (Mrs.) Mojisola Ladipo, FNIM, mni", venue: "Main Auditorium + Zoom", desc: "The lecture of the day — changing higher education management." },
   { time: "11:00 – 11:30", title: "Tea Break & Networking", speaker: "—", venue: "Auditorium Lounge", desc: "Refreshments and gallery." },
   { time: "11:30 – 12:30", title: "Panel Discourse & Q&A", speaker: "Panel of Registrars & Administrators", venue: "Main Auditorium + Zoom", desc: "Innovation in registry practice, digital governance, service excellence." },
