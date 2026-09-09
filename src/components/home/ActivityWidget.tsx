@@ -24,8 +24,8 @@ export function ActivityWidget() {
       const sb = getSupabase()!;
       const { count: cnt } = await sb.from("registrations").select("id", { count: "exact", head: true }).eq("status", "confirmed").eq("public_activity_opt_in", true);
       setCount(cnt ?? 0);
-      const { data } = await sb.from("public_activity_view").select("masked_name, organisation, created_at").order("created_at", { ascending: false }).limit(4);
-      if (data) setItems(data.map((r: any) => ({ name: r.masked_name, org: r.organisation || "", timeAgo: "recently" })));
+      const { data } = await sb.from("public_activity_view").select("full_name, organisation, created_at").order("created_at", { ascending: false }).limit(4);
+      if (data) setItems(data.map((r: any) => ({ name: r.full_name, org: r.organisation || "", timeAgo: "recently" })));
     }
     load();
     const id = setInterval(load, 15000);
@@ -44,16 +44,20 @@ export function ActivityWidget() {
         </p>
       ) : (
         <ul className="mt-3 space-y-2">
-          {items.map((it, i) => (
-            <li key={i} className="flex items-center gap-3 rounded-2xl bg-purple-50/70 px-3 py-2.5">
-              <span className="h-8 w-8 rounded-full bg-[#4C1769] text-white grid place-items-center text-xs font-black">{it.name.charAt(0)}</span>
-              <div className="min-w-0">
-                <div className="text-sm font-semibold truncate">{it.name} {it.org ? `• ${it.org}` : ""}</div>
-                <div className="text-xs text-zinc-500">{it.timeAgo}</div>
-              </div>
-              <span className="ml-auto h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            </li>
-          ))}
+          {items.map((it, i) => {
+            const words = it.name.trim().split(/\s+/).filter(Boolean);
+            const initials = words.length >= 2 ? (words[0][0] + words[words.length - 1][0]).toUpperCase() : (words[0]?.[0] || "?").toUpperCase();
+            return (
+              <li key={i} className="flex items-center gap-3 rounded-2xl bg-purple-50/70 px-3 py-2.5">
+                <span className="h-8 w-8 rounded-full bg-[#4C1769] text-white grid place-items-center text-xs font-black">{initials}</span>
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold truncate">{it.name} {it.org ? `• ${it.org}` : ""}</div>
+                  <div className="text-xs text-zinc-500">{it.timeAgo}</div>
+                </div>
+                <span className="ml-auto h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              </li>
+            );
+          })}
         </ul>
       )}
       <p className="mt-3 text-[11px] text-zinc-500">Privacy-safe • Only consenting registrations</p>

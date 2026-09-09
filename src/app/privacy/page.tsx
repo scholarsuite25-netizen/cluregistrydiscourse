@@ -11,7 +11,7 @@ export default function PrivacyPage() {
         <li>Consent flags — email (required for operational messages), WhatsApp opt-in, push opt-in, public-activity opt-in.</li>
       </ul>
       <h2>Public activity</h2>
-      <p>First name + surname initial (and organisation if you approve) may appear in a live widget only if you tick “public activity opt-in”. Email, phone, access code and exact timestamps are never shown. Production counts come only from confirmed Supabase rows.</p>
+      <p>Your full name and organisation may appear in the live registrations widget only if you tick “public activity opt-in”. Email, phone, access code and exact timestamps are never shown. Production counts come only from confirmed Supabase rows.</p>
       <h2>Processors & storage</h2>
       <p>Supabase (PostgreSQL, Auth, Storage) and Vercel (hosting). Files in private buckets via signed URLs. No Supabase service role in browser.</p>
       <h2>Your rights</h2>
