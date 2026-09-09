@@ -1,9 +1,9 @@
-import { Award, UserCheck, Download, Mail, Building2, GraduationCap } from "lucide-react";
-import { EVENT } from "@/lib/constants";
+import { Award, UserCheck, Download, Mail, Building2, PenLine, Upload } from "lucide-react";
+import CertificatePreview from "@/components/certificate/CertificatePreview";
 
 export const metadata = {
   title: "Certificates — CLU Registry Discourse 2026",
-  description: "Sample certificate, eligibility and how to receive your certificate for the Maiden Registry Discourse.",
+  description: "How to get your Certificate of Participation for the Maiden Registry Discourse.",
 };
 
 export default function CertificatesPage() {
@@ -13,7 +13,7 @@ export default function CertificatesPage() {
         <div className="text-center mb-10">
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-[#1A0B2E]">Certificates</h1>
           <p className="text-base text-zinc-600 mt-2 max-w-2xl mx-auto">
-            Sample design, who qualifies and how every participant receives their Certificate of Participation.
+            How to get your copy of the Certificate of Participation for the Maiden Registry Discourse.
           </p>
         </div>
 
@@ -22,39 +22,38 @@ export default function CertificatesPage() {
           <h2 className="text-xl font-black text-[#4C1769] flex items-center gap-2 mb-4">
             <Award className="h-5 w-5 text-[#C9B676]" /> Sample Certificate
           </h2>
-          {/* certificate mock */}
-          <div className="rounded-2xl border-4 border-[#C9B676] bg-[#FFFDF6] p-6 sm:p-10 w-full aspect-[1.414/1] relative overflow-hidden flex flex-col">
-            <div className="absolute inset-3 border border-[#4C1769]/30 rounded-xl pointer-events-none" />
-            <div className="relative z-10 flex flex-col h-full justify-between text-center">
-              <div>
-                <div className="text-[10px] sm:text-xs font-bold tracking-[0.3em] text-[#4C1769]">CHRISLAND UNIVERSITY, ABEOKUTA</div>
-                <div className="text-[9px] sm:text-[11px] font-semibold tracking-widest text-zinc-500 mt-1">OFFICE OF THE REGISTRAR</div>
-                <div className="mt-3 text-xs sm:text-sm font-black tracking-[0.2em] text-[#4C1769]">MAIDEN REGISTRY DISCOURSE 2026</div>
-              </div>
-              <div className="flex-1 flex flex-col items-center justify-center py-2">
-                <div className="text-xs sm:text-sm font-bold tracking-widest text-[#C9B676]">CERTIFICATE OF PARTICIPATION</div>
-                <div className="text-xs text-zinc-500 mt-2">This is to certify that</div>
-                <div className="text-2xl sm:text-4xl font-black italic text-[#1A0B2E] mt-2 font-serif">[Participant&apos;s Name]</div>
-                <div className="text-[11px] sm:text-sm text-zinc-600 mt-3 max-w-xl leading-relaxed">
-                  attended the Maiden Registry Discourse held on {EVENT.date} at Chrisland University, Abeokuta with the theme “Governance, Innovation and Service”.
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-8 max-w-md mx-auto w-full">
-                <div className="border-t border-zinc-400 pt-2">
-                  <div className="text-[9px] sm:text-[11px] text-zinc-700">Mr. S. B. Omotoso, FCIA</div>
-                  <div className="text-[8px] sm:text-[10px] text-zinc-500">Registrar</div>
-                </div>
-                <div className="border-t border-zinc-400 pt-2">
-                  <div className="text-[9px] sm:text-[11px] text-zinc-700">Prof. Oyedunni S. Arulogun, FAAS</div>
-                  <div className="text-[8px] sm:text-[10px] text-zinc-500">Vice-Chancellor</div>
-                </div>
-              </div>
-              <div className="text-[8px] sm:text-[10px] font-mono text-zinc-400 mt-3">Certificate No: RD-2026-0001 • Access Code: XXXX-XXXX</div>
-            </div>
-          </div>
+          <CertificatePreview name="Participant's Full Name" />
           <p className="text-xs text-zinc-500 mt-4 text-center">
-            Sample design shown above. The final certificate is print-ready on A4 landscape with the university seal.
+            Sample design in the university colours with the university logo. The final certificate is print-ready on A4
+            landscape and carries your typed name, your certificate number and your access code.
           </p>
+        </div>
+
+        {/* How to get your copy */}
+        <div className="rounded-[24px] bg-[#4C1769] text-white shadow-lg p-6 sm:p-8 mb-8">
+          <h2 className="text-lg font-black flex items-center gap-2">
+            <Download className="h-5 w-5 text-[#C9B676]" /> How to get your copy
+          </h2>
+          <ol className="mt-4 space-y-4 text-sm sm:text-[15px] text-white/90 leading-relaxed">
+            <li className="flex gap-3">
+              <span className="h-6 w-6 rounded-full bg-[#C9B676] text-[#4C1769] grid place-items-center font-black text-xs shrink-0 mt-0.5">1</span>
+              <div>
+                <b>Register and attend.</b> Your certificate is issued for the Maiden Registry Discourse on {`15 October 2026`}. You must be an officially registered participant who attended — physically (checked in at the venue) or online (verified in the live Zoom session).
+              </div>
+            </li>
+            <li className="flex gap-3">
+              <span className="h-6 w-6 rounded-full bg-[#C9B676] text-[#4C1769] grid place-items-center font-black text-xs shrink-0 mt-0.5">2</span>
+              <div>
+                <b>Wait for the Portal release.</b> After the event, certificates are released in the <b>Portal</b>. Your name, institution and access code are matched automatically to your registration.
+              </div>
+            </li>
+            <li className="flex gap-3">
+              <span className="h-6 w-6 rounded-full bg-[#C9B676] text-[#4C1769] grid place-items-center font-black text-xs shrink-0 mt-0.5">3</span>
+              <div>
+                <b>Download or receive it.</b> Sign in to the Portal with your email or access code and download the print-ready PDF. A copy is also emailed to your registered address within a week of the event, and physical attendees may collect a printed copy from the Registry on request.
+              </div>
+            </li>
+          </ol>
         </div>
 
         {/* Who gets it */}
@@ -73,29 +72,43 @@ export default function CertificatesPage() {
             </p>
           </div>
 
+          {/* Digital signatures */}
           <div className="rounded-[24px] bg-white border border-purple-100 shadow-lg p-6">
             <h2 className="text-lg font-black text-[#4C1769] flex items-center gap-2">
-              <Download className="h-5 w-5 text-[#4C1769]" /> How you receive your copy
+              <PenLine className="h-5 w-5 text-[#B25900]" /> Digital signatures — how they are added
             </h2>
             <ul className="mt-4 space-y-3 text-sm text-zinc-700 leading-relaxed">
-              <li className="flex gap-2"><span className="text-[#4C1769] font-black">1.</span> <b>Portal download:</b> after the event, sign in to the <b>Portal</b> with your email or access code and download your certificate as a print-ready PDF.</li>
-              <li className="flex gap-2"><span className="text-[#4C1769] font-black">2.</span> <b>By email:</b> a copy is emailed to the address you registered with, within a week after the event.</li>
-              <li className="flex gap-2"><span className="text-[#4C1769] font-black">3.</span> <b>Printed copy:</b> physical attendees may pick up a printed copy at the Registry, University Secretariat, on request.</li>
+              <li className="flex gap-2"><span className="text-[#B25900] font-black">1.</span> The Registrar and Vice-Chancellor sign on paper (or with a stylus/tablet).</li>
+              <li className="flex gap-2"><span className="text-[#B25900] font-black">2.</span> Each signature is saved as a small image with a <b>white or transparent background</b> (PNG).</li>
+              <li className="flex gap-2"><span className="text-[#B25900] font-black">3.</span> The admin uploads the two images in the <b>admin Certificates console</b>.</li>
+              <li className="flex gap-2"><span className="text-[#B25900] font-black">4.</span> The signatures are <b>automatically placed</b> above each signer&apos;s name on every certificate — no manual work per certificate.</li>
             </ul>
-            <p className="mt-4 text-xs text-zinc-500">
-              Every certificate carries a unique certificate number and your access code, so it can be verified online.
-            </p>
+            <div className="mt-4 rounded-2xl bg-orange-50 border border-orange-200 flex items-start gap-2 p-3">
+              <Upload className="h-4 w-4 text-[#B25900] mt-0.5 shrink-0" />
+              <p className="text-xs text-zinc-600">Need a helping hand? The signatures can also be drawn directly in an app like Canva or WhatsApp image editor and exported — then uploaded by admin.</p>
+            </div>
           </div>
         </div>
 
-        {/* Verification note */}
-        <div className="rounded-[24px] bg-[#4C1769] text-white p-6 flex items-start gap-4">
-          <GraduationCap className="h-8 w-8 text-[#C9B676] shrink-0" />
-          <div>
-            <h3 className="font-black">Online verification</h3>
-            <p className="text-sm text-white/80 mt-1">
-              Third parties (employers, institutions) can verify any certificate using its certificate number on the Portal — protecting the integrity of every credential issued.
-            </p>
+        {/* Verify + contact */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="rounded-[24px] bg-[#0E7C3E] text-white p-6 flex items-start gap-4">
+            <Award className="h-8 w-8 text-[#C9B676] shrink-0" />
+            <div>
+              <h3 className="font-black">Online verification</h3>
+              <p className="text-sm text-white/85 mt-1">
+                Third parties (employers, institutions) can verify any certificate using its certificate number on the Portal — protecting the integrity of every credential issued.
+              </p>
+            </div>
+          </div>
+          <div className="rounded-[24px] bg-[#4C1769] text-white p-6 flex items-start gap-4">
+            <Mail className="h-8 w-8 text-[#C9B676] shrink-0" />
+            <div>
+              <h3 className="font-black">Questions or corrections</h3>
+              <p className="text-sm text-white/85 mt-1">
+                For name corrections or certificate enquiries, contact the Registry Discourse desk and quote your access code.
+              </p>
+            </div>
           </div>
         </div>
       </div>

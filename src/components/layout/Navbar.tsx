@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { Menu, X, Phone, MessageCircle, Sparkles, ExternalLink } from "lucide-react";
 import { EVENT } from "@/lib/constants";
@@ -38,7 +39,7 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-[68px] items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-[#4C1769] to-[#6B3A8A] grid place-items-center text-white font-black text-sm shadow-lg">CLU</div>
+            <Image src="/images/clu-logo.png" alt="Chrisland University logo" width={40} height={40} className="h-10 w-10 rounded-xl shadow-lg object-contain bg-white" />
             <div className="leading-none">
               <div className="font-black tracking-tight text-[#4C1769] text-[15px]">CLU REGISTRY</div>
               <div className="text-[11px] tracking-[0.2em] font-bold text-[#C9B676] -mt-0.5">DISCOURSE 2026</div>

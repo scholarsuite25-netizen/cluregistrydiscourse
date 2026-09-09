@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { EVENT } from "@/lib/constants";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 
@@ -9,7 +10,7 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-[#C9B676] to-[#E8D9A8] grid place-items-center text-[#4C1769] font-black">CLU</div>
+              <Image src="/images/clu-logo-white.png" alt="Chrisland University logo" width={40} height={40} className="h-10 w-10 rounded-xl object-contain bg-white" />
               <div>
                 <div className="font-black leading-none">CLU REGISTRY DISCOURSE</div>
                 <div className="text-xs tracking-widest text-[#C9B676]">GOVERNANCE • INNOVATION • SERVICE</div>
