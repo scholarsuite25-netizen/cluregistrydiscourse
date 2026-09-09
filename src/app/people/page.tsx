@@ -1,6 +1,28 @@
 import { PEOPLE } from "@/lib/constants";
 import Link from "next/link";
-import { ArrowRight, Mail, Phone, MapPin } from "lucide-react";
+import { ArrowRight, Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+
+const LOC_MEMBERS = [
+  { name: "Mr. Olubunmi Omomogbe", role: "Chairman / Logistics", phone: "07038347947" },
+  { name: "Engr. Ajibade", role: "Member / Logistics", phone: "08057070965" },
+  { name: "Mr. Rapheal Decampos", role: "Member / Logistics / Protocols", phone: "08023364530" },
+  { name: "Mrs. Dolapo Akintoye", role: "Member / Logistics / Protocols", phone: "07039736973" },
+  { name: "Mr. Tobi Olaleye", role: "Member / Media", phone: "08167741656" },
+  { name: "Mr. Boluwatife Jeremiah", role: "Member / Logistics / Registration", phone: "08101339945" },
+  { name: "Mr. Friday John", role: "Member / Media", phone: "07061368977" },
+  { name: "Mrs. Tolulope Ilugbo", role: "Member / Registration / Welfare", phone: "08064952854" },
+  { name: "Mrs. Abosede Olaniyi", role: "Member / Publicity / Registration / Welfare", phone: "09051566682" },
+  { name: "Mr. Victor Idigbe", role: "Member / Registration / Protocols / Welfare", phone: "08103821387" },
+  { name: "Miss Esther Okafor", role: "Member / Welfare", phone: "07041389211" },
+  { name: "Mrs. Mercy Jonah", role: "Member / Welfare", phone: "08064619722" },
+  { name: "Mrs. Loveth Okonkwo", role: "Secretary / Welfare", phone: "07032690847" },
+];
+
+function waLink(phone: string) {
+  // Nigerian format 07038347947 -> wa.me/2347038347947
+  const intl = "+234" + phone.slice(1);
+  return `https://wa.me/${intl.replace("+", "")}?text=${encodeURIComponent("Hello, I'm contacting you regarding the CLU Registry Discourse.")}`;
+}
 
 export default function PeoplePage() {
   return (
@@ -44,10 +66,28 @@ export default function PeoplePage() {
         {/* Local Organising Committee */}
         <div className="mt-10 rounded-[24px] bg-white border border-purple-100 p-6">
           <h3 className="text-xl font-black text-[#4C1769]">Local Organising Committee</h3>
-          <p className="text-sm text-zinc-600 mt-1">Details will be published after official confirmation.</p>
-          <div className="mt-4 rounded-2xl bg-purple-50 border border-dashed border-purple-200 p-8 text-center">
-            <p className="text-sm font-semibold text-[#4C1769]">LOC members will appear here with their headshots and roles.</p>
-            <p className="text-xs text-zinc-600 mt-1">Photos wrapped around text • Department & role displayed</p>
+          <p className="text-sm text-zinc-600 mt-1">The team behind the Maiden Registry Discourse. Tap to call or message any member.</p>
+          <div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {LOC_MEMBERS.map((m) => {
+              const initials = m.name.replace(/^(Mr\.|Mrs\.|Miss|Engr\.|Dr\.|Prof\.)\s*/, "").split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+              return (
+                <div key={m.name} className="rounded-[20px] border border-purple-100 bg-[#FBF7FF] p-4 flex items-start gap-3">
+                  <span className="h-11 w-11 rounded-full bg-[#4C1769] text-white grid place-items-center font-black text-sm shrink-0">{initials}</span>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-bold text-[#1A0B2E] text-sm leading-tight">{m.name}</div>
+                    <div className="text-xs text-[#C9B676] font-bold mt-0.5">{m.role}</div>
+                    <div className="flex gap-2 mt-2">
+                      <a href={`tel:+234${m.phone.slice(1)}`} className="inline-flex items-center gap-1 rounded-full bg-[#4C1769] text-white px-3 py-1.5 text-xs font-bold hover:bg-[#3A1150]">
+                        <Phone className="h-3 w-3" /> Call
+                      </a>
+                      <a href={waLink(m.phone)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full bg-[#25D366] text-white px-3 py-1.5 text-xs font-bold hover:opacity-90">
+                        <MessageCircle className="h-3 w-3" /> WhatsApp
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
