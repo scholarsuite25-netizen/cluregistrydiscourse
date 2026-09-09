@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { EVENT, PEOPLE, PROGRAMME, STATS } from "@/lib/constants";
 import { Countdown } from "@/components/home/Countdown";
 import { ActivityWidget } from "@/components/home/ActivityWidget";
@@ -142,7 +143,9 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
                   <span className="rounded-full bg-[#C9B676] text-[#4C1769] text-[10px] font-black tracking-widest px-2.5 py-1">{p.badge}</span>
-                  <span className="h-12 w-12 rounded-full bg-white text-[#4C1769] grid place-items-center font-black text-lg">{p.initials}</span>
+                  {p.photo && (
+                    <Image src={p.photo} alt={p.name} width={48} height={48} className="h-12 w-12 rounded-full object-cover border-2 border-white/80 shadow-lg" />
+                  )}
                 </div>
               </div>
               <div className="p-4">
