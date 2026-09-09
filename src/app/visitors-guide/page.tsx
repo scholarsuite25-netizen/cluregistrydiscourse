@@ -58,14 +58,14 @@ const PLACES_TO_VISIT = [
     desc: "Ancient rock formation and historical landmark of Abeokuta. Panoramic views of the city, caves used during inter-tribal wars, and a cable car ride to the summit.",
     time: "30 min drive from university",
     best: "Early morning or sunset",
-    fee: "₦1,000 – ₦2,000"
+    fee: "₦4,000.00 / person"
   },
   {
     name: "Obasanjo Presidential Library",
     desc: "A world-class library and cultural centre housing books, photographs, and memorabilia from Nigeria's history. Includes a museum, children's playground, and conferencing facilities.",
     time: "20 min drive from university",
     best: "Weekday mornings",
-    fee: "₦500 – ₦1,500"
+    fee: "From ₦2,500 / person"
   },
   {
     name: "Itoku Adire Market",
