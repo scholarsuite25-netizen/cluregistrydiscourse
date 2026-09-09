@@ -1,5 +1,6 @@
 import { PEOPLE } from "@/lib/constants";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 
 const LOC_MEMBERS = [
@@ -40,10 +41,10 @@ export default function PeoplePage() {
           {PEOPLE.map((p) => (
             <div key={p.slug} className="rounded-[24px] bg-white border border-purple-100 shadow-lg overflow-hidden">
               <div className="flex">
-                {/* Photo placeholder — left side, text wraps around */}
-                <div className="w-36 h-36 bg-gradient-to-br from-[#4C1769] to-[#6B3A8A] shrink-0 flex flex-col items-center justify-center text-center p-2">
-                  <span className="h-20 w-20 rounded-full bg-[#C9B676] text-[#4C1769] grid place-items-center font-black text-2xl shadow-lg">{p.initials}</span>
-                  <span className="text-white/70 text-[10px] mt-2 font-bold">{p.badge}</span>
+                {/* Photo — left side, text wraps around */}
+                <div className="relative w-36 shrink-0 min-h-[144px]">
+                  <Image src={p.photo} alt={p.name} width={144} height={144} className="h-full w-full object-cover" />
+                  <span className="absolute bottom-0 left-0 right-0 bg-[#4C1769]/85 text-white text-center text-[10px] py-1.5 font-bold">{p.badge}</span>
                 </div>
                 {/* Text wraps around the photo */}
                 <div className="p-5 flex-1">

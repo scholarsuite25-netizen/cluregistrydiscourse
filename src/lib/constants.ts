@@ -36,6 +36,7 @@ export const PEOPLE = [
     excerpt: "Distinguished university administrator and the first female Registrar of the University of Ibadan. Served as Registrar for ten years and contributed extensively to professional university administration, leadership development, and mentoring in Nigeria.",
     bio: "Chief (Mrs.) Mojisola Olusola Ladipo, FNIM, mni, is a distinguished university administrator and the first female Registrar of the University of Ibadan. She served as Registrar for ten years and has contributed extensively to professional university administration, leadership development, training, and mentoring in Nigeria. She earned a first degree in English and a master's in Industrial and Labour Relations from the University of Ibadan and helped revive the Committee of Registrars of Nigerian Universities.",
     initials: "ML",
+    photo: "/people/mojisola-ladipo.png",
   },
   {
     slug: "ayodeji-olukoju",
@@ -45,6 +46,7 @@ export const PEOPLE = [
     excerpt: "Professor of History and Fellow of the Nigerian Academy of Letters. Scholarship spans maritime, transport, economic, social, corporate, and urban history. Former Vice-Chancellor of Caleb University.",
     bio: "Distinguished Professor Ayodeji Oladimeji Olukoju is a Professor of History and Fellow of the Nigerian Academy of Letters. His scholarship spans maritime, transport, economic, social, corporate, and urban history. He previously served as Vice-Chancellor of Caleb University and holds senior academic and university governance experience.",
     initials: "AO",
+    photo: "/people/ayodeji-olukoju.png",
   },
   {
     slug: "oyedunni-arulogun",
@@ -54,6 +56,7 @@ export const PEOPLE = [
     excerpt: "Professor of Health Promotion and Education. Her work includes health promotion, community engagement, qualitative research, mentoring, and capacity building. Former academic leadership roles at the University of Ibadan.",
     bio: "Professor Oyedunni Sola Arulogun is a Professor of Health Promotion and Education and Vice-Chancellor of Chrisland University. Her work includes health promotion, community engagement, qualitative research, mentoring, and capacity building. She previously held academic leadership roles at the University of Ibadan.",
     initials: "OA",
+    photo: "/people/oyedunni-arulogun.png",
   },
   {
     slug: "sb-omotoso",
@@ -63,6 +66,7 @@ export const PEOPLE = [
     excerpt: "Registrar of Chrisland University and convener of the Maiden Registry Discourse. Detailed profile to be published upon official confirmation.",
     bio: "Mr. S. B. Omotoso is the Registrar of Chrisland University, Abeokuta and Host of the Maiden Registry Discourse. A fuller profile will be published upon official approval.",
     initials: "SO",
+    photo: "/people/sb-omotoso.png",
   },
 ] as const;
 
