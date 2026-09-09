@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X, Phone, MessageCircle, Sparkles } from "lucide-react";
+import { Menu, X, Phone, MessageCircle, Sparkles, ExternalLink } from "lucide-react";
 import { EVENT } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 
@@ -13,6 +13,10 @@ const nav = [
   { href: "/visitors-guide", label: "Visitors Guide" },
   { href: "/post-conference", label: "Post-Event" },
   { href: "/portal", label: "Portal" },
+];
+
+const externalNav = [
+  { href: "https://chrislanduniversity.edu.ng", label: "University", external: true },
 ];
 
 export function Navbar() {
@@ -46,6 +50,11 @@ export function Navbar() {
                 {n.label}
               </Link>
             ))}
+            {externalNav.map((n) => (
+              <a key={n.href} href={n.href} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-full text-sm font-medium text-[#4C1769] hover:text-[#4C1769] hover:bg-purple-50 transition">
+                {n.label} <ExternalLink className="h-3 w-3 inline -mt-0.5" />
+              </a>
+            ))}
           </nav>
 
           <div className="hidden lg:flex items-center gap-2">
@@ -65,6 +74,11 @@ export function Navbar() {
             <Link key={n.href} onClick={() => setOpen(false)} href={n.href} className="block px-3 py-3 rounded-xl font-medium hover:bg-purple-50 text-[#4C1769]">
               {n.label}
             </Link>
+          ))}
+          {externalNav.map((n) => (
+            <a key={n.href} href={n.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="block px-3 py-3 rounded-xl font-medium hover:bg-purple-50 text-[#4C1769]">
+              {n.label} <ExternalLink className="h-3 w-3 inline -mt-0.5" />
+            </a>
           ))}
           <Link onClick={() => setOpen(false)} href="/register" className="block mt-3"><Button className="w-full">Register — Free Access Pass</Button></Link>
           <div className="flex gap-2 pt-3">
