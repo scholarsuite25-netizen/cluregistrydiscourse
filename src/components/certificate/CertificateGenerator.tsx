@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import JSZip from "jszip";
-import { FileDown, PackageCheck, RefreshCw, AlertTriangle } from "lucide-react";
+import { FileDown, PackageCheck, RefreshCw, AlertTriangle, TestTube2 } from "lucide-react";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
 import { buildCertificatePdf } from "@/lib/certificate-pdf";
 
@@ -32,6 +32,7 @@ export default function CertificateGenerator({
   settings: Record<string, string>;
 }) {
   const [running, setRunning] = useState(false);
+  const [testing, setTesting] = useState(false);
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -133,6 +134,29 @@ export default function CertificateGenerator({
     setRunning(false);
   }
 
+  async function handleTestPdf() {
+    setError(null);
+    setMessage(null);
+    setTesting(true);
+    try {
+      const [sigR, sigV] = await Promise.all([
+        settings["registrar_signature_url"] ? fetchBuf(settings["registrar_signature_url"]) : Promise.resolve(null),
+        settings["vc_signature_url"] ? fetchBuf(settings["vc_signature_url"]) : Promise.resolve(null),
+      ]);
+      const pdf = await buildCertificatePdf({
+        name: "Adaeze Ngozi Okafor",
+        certificateNo: "RD-2026-0001",
+        accessCode: "XXXX-XXXX",
+        images: { registrar: sigR, vc: sigV },
+      });
+      downloadBlob(new Blob([new Uint8Array(pdf)], { type: "application/pdf" }), "Certificate - Test.pdf");
+      setMessage("Test certificate downloaded. Nothing was saved — this only verifies the PDF layout.");
+    } catch (e: any) {
+      setError(e?.message || "Test failed unexpectedly.");
+    }
+    setTesting(false);
+  }
+
   return (
     <div className="rounded-[24px] bg-white border border-purple-100 shadow-lg p-6 mb-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -146,14 +170,23 @@ export default function CertificateGenerator({
             participant by email or WhatsApp. Certificate numbers stay the same if you regenerate.
           </p>
         </div>
-        <button
-          onClick={handleGenerate}
-          disabled={running || eligible.length === 0}
-          className="inline-flex items-center gap-2 rounded-full bg-[#0E7C3E] text-white px-5 py-2.5 text-sm font-black hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed transition"
-        >
-          {running ? <RefreshCw className="h-4 w-4 animate-spin" /> : <FileDown className="h-4 w-4" />}
-          {running ? `Generating ${progress.done}/${progress.total}...` : `Generate & Download ZIP (${eligible.length})`}
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            onClick={handleTestPdf}
+            disabled={testing || running}
+            className="inline-flex items-center gap-2 rounded-full border-2 border-[#4C1769] bg-white text-[#4C1769] px-4 py-2 text-sm font-black hover:bg-[#4C1769] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition"
+          >
+            <TestTube2 className="h-4 w-4" /> Test PDF
+          </button>
+          <button
+            onClick={handleGenerate}
+            disabled={running || eligible.length === 0}
+            className="inline-flex items-center gap-2 rounded-full bg-[#0E7C3E] text-white px-5 py-2.5 text-sm font-black hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed transition"
+          >
+            {running ? <RefreshCw className="h-4 w-4 animate-spin" /> : <FileDown className="h-4 w-4" />}
+            {running ? `Generating ${progress.done}/${progress.total}...` : `Generate & Download ZIP (${eligible.length})`}
+          </button>
+        </div>
       </div>
 
       {progress.done > 0 && running && (
