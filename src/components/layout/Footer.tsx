@@ -10,7 +10,7 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <Image src="/images/clu-logo-white.png" alt="Chrisland University logo" width={40} height={40} className="h-10 w-10 rounded-xl object-contain bg-white" />
+              <Image src="/images/clu-logo.png" alt="Chrisland University logo" width={40} height={40} className="h-10 w-10 rounded-xl object-contain bg-white border border-[#C9B676]/30" />
               <div>
                 <div className="font-black leading-none">CLU REGISTRY DISCOURSE</div>
                 <div className="text-xs tracking-widest text-[#C9B676]">GOVERNANCE • INNOVATION • SERVICE</div>
