@@ -44,13 +44,13 @@ export default function CertificatesPage() {
             <li className="flex gap-3 items-start">
               <span className="h-6 w-6 rounded-full bg-[#C9B676] text-[#4C1769] grid place-items-center font-black text-xs shrink-0 mt-0.5">2</span>
               <div className="flex-1 text-justify">
-                <b>Wait for the Portal release.</b> After the event, certificates are released in the <b>Portal</b>. Your name, institution and access code are matched automatically to your registration.
+                <b>Certificates are prepared.</b> After the event, the Registry prepares one certificate per eligible participant using their registration details — full name, certificate number and access code — with the digital signatures in place.
               </div>
             </li>
             <li className="flex gap-3 items-start">
               <span className="h-6 w-6 rounded-full bg-[#C9B676] text-[#4C1769] grid place-items-center font-black text-xs shrink-0 mt-0.5">3</span>
               <div className="flex-1 text-justify">
-                <b>Download your softcopy.</b> Sign in to the Portal with your email or access code and download your certificate as a PDF. A copy is also emailed to your registered address within a week of the event.
+                <b>It is sent to you.</b> Your certificate is emailed to your registered email address (and can be shared via WhatsApp). You do not need to download or print anything — just keep the copy you receive. Please quote your access code for any correction or enquiry.
               </div>
             </li>
           </ol>
@@ -71,25 +71,15 @@ export default function CertificatesPage() {
           </p>
         </div>
 
-        {/* Verify + contact */}
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="rounded-[24px] bg-[#0E7C3E] text-white p-6 flex items-start gap-4">
-            <Award className="h-8 w-8 text-[#C9B676] shrink-0" />
-            <div>
-              <h3 className="font-black">Online verification</h3>
-              <p className="text-sm text-white/85 mt-1">
-                Third parties (employers, institutions) can verify any certificate using its certificate number on the Portal — protecting the integrity of every credential issued.
-              </p>
-            </div>
-          </div>
-          <div className="rounded-[24px] bg-[#4C1769] text-white p-6 flex items-start gap-4">
-            <Mail className="h-8 w-8 text-[#C9B676] shrink-0" />
-            <div>
-              <h3 className="font-black">Questions or corrections</h3>
-              <p className="text-sm text-white/85 mt-1">
-                For name corrections or certificate enquiries, contact the Registry Discourse desk and quote your access code.
-              </p>
-            </div>
+        {/* Contact */}
+        <div className="rounded-[24px] bg-[#4C1769] text-white p-6 flex items-start gap-4">
+          <Mail className="h-8 w-8 text-[#C9B676] shrink-0" />
+          <div>
+            <h3 className="font-black">Questions or corrections</h3>
+            <p className="text-sm text-white/85 mt-1">
+              For name corrections or certificate enquiries, contact the Registry Discourse desk and quote your access
+              code.
+            </p>
           </div>
         </div>
       </div>

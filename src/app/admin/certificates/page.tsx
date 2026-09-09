@@ -14,6 +14,7 @@ import {
   Trash2,
 } from "lucide-react";
 import CertificatePreview from "@/components/certificate/CertificatePreview";
+import CertificateGenerator from "@/components/certificate/CertificateGenerator";
 
 export default function AdminCertsPage() {
   const [registrations, setRegistrations] = useState<any[]>([]);
@@ -224,6 +225,9 @@ export default function AdminCertsPage() {
           <div className="text-xs font-bold text-zinc-500">CERT ELIGIBLE</div>
         </div>
       </div>
+
+      {/* Generate certificates */}
+      <CertificateGenerator registrations={registrations} settings={settings} />
 
       {/* Search */}
       <div className="relative mb-6">
