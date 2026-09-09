@@ -32,9 +32,11 @@ export default function AdminMaterialsPage() {
   const [err, setErr] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ title: "", description: "" });
   const [file, setFile] = useState<File | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const editFileRef = useRef<HTMLInputElement>(null);
 
   async function loadMaterials() {
     setLoading(true);
@@ -118,6 +120,72 @@ export default function AdminMaterialsPage() {
     }
   }
 
+  async function startEdit(m: Material) {
+    setEditing(m.id);
+    setForm({ title: m.title, description: m.description || "" });
+    setFile(null);
+    if (editFileRef.current) editFileRef.current.value = "";
+  }
+
+  function cancelEdit() {
+    setEditing(null);
+    setForm({ title: "", description: "" });
+    setFile(null);
+  }
+
+  async function handleUpdate(id: string, oldFileUrl: string) {
+    if (!form.title) return;
+    setSaving(true);
+    setErr(null);
+    try {
+      const sb = getSupabase()!;
+      if (!sb) throw new Error("Supabase not configured");
+      let newFileUrl = oldFileUrl;
+      let newFileType = "";
+      let newFileSize = 0;
+
+      // If a replacement file was chosen, upload it and remove the old one
+      if (file) {
+        if (!ALLOWED_TYPES.includes(file.type)) {
+          throw new Error("File type not allowed. Use PDF, DOCX, PPTX, or images.");
+        }
+        if (file.size > MAX_SIZE) {
+          throw new Error("File too large. Maximum 25MB.");
+        }
+        const ext = file.name.split(".").pop();
+        const newFileName = `${Date.now()}-${form.title.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase()}.${ext}`;
+        const { error: uploadError } = await sb.storage.from("materials").upload(newFileName, file);
+        if (uploadError) throw new Error("Upload failed: " + uploadError.message);
+        const { data: urlData } = sb.storage.from("materials").getPublicUrl(newFileName);
+        newFileUrl = urlData.publicUrl;
+        newFileType = file.type;
+        newFileSize = file.size;
+
+        const parts = oldFileUrl.split("/");
+        const oldFileName = parts[parts.length - 1];
+        await sb.storage.from("materials").remove([oldFileName]);
+      }
+
+      const { error: dbError } = await sb
+        .from("materials")
+        .update({
+          title: form.title,
+          description: form.description,
+          ...(file ? { file_url: newFileUrl, file_type: newFileType, file_size: newFileSize } : {}),
+        })
+        .eq("id", id);
+      if (dbError) throw new Error(dbError.message);
+
+      setEditing(null);
+      setForm({ title: "", description: "" });
+      setFile(null);
+      await loadMaterials();
+    } catch (e: any) {
+      setErr(e.message);
+    }
+    setSaving(false);
+  }
+
   function formatSize(bytes: number) {
     if (bytes < 1024) return bytes + " B";
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
@@ -138,7 +206,7 @@ export default function AdminMaterialsPage() {
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#1A0B2E]">Materials Library</h1>
-          <p className="text-sm text-zinc-600 mt-1">Upload and manage materials for participants. PDF, DOCX, PPTX, images (max 25MB).</p>
+          <p className="text-sm text-zinc-600 mt-1">Add, update or delete materials for participants. PDF, DOCX, PPTX, images (max 25MB).</p>
         </div>
         <button onClick={loadMaterials} className="inline-flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-sm font-bold">
           <RefreshCw className="h-4 w-4" /> Refresh
@@ -208,40 +276,60 @@ export default function AdminMaterialsPage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {materials.map((m) => (
             <div key={m.id} className="rounded-[20px] bg-white border border-purple-100 p-5 hover:shadow-lg transition">
-              <div className="flex items-start gap-3">
-                <span className="text-3xl">{getFileIcon(m.file_type)}</span>
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-bold text-[#1A0B2E] truncate">{m.title}</h3>
-                  {m.description && <p className="text-xs text-zinc-500 mt-0.5 truncate">{m.description}</p>}
+              {editing === m.id ? (
+                <div className="space-y-3">
+                  <h3 className="font-bold text-[#1A0B2E] text-sm">Editing material</h3>
+                  <div>
+                    <label className="text-[11px] font-bold tracking-widest text-zinc-700">TITLE *</label>
+                    <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm" />
+                  </div>
+                  <div>
+                    <label className="text-[11px] font-bold tracking-widest text-zinc-700">DESCRIPTION</label>
+                    <input value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm" />
+                  </div>
+                  <div>
+                    <label className="text-[11px] font-bold tracking-widest text-zinc-700">REPLACE FILE (OPTIONAL)</label>
+                    <input ref={editFileRef} type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.gif" onChange={(e) => setFile(e.target.files?.[0] || null)} className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm text-xs" />
+                    {file && <p className="text-xs text-zinc-500 mt-1">{file.name} ({formatSize(file.size)})</p>}
+                  </div>
+                  <div className="flex gap-2">
+                    <button onClick={() => handleUpdate(m.id, m.file_url)} disabled={saving || !form.title} className="flex-1 inline-flex items-center justify-center gap-1 rounded-full bg-[#4C1769] text-white px-3 py-2 text-xs font-bold disabled:opacity-50">
+                      <Save className="h-3 w-3" /> {saving ? "Saving..." : "Save"}
+                    </button>
+                    <button onClick={cancelEdit} className="flex-1 inline-flex items-center justify-center gap-1 rounded-full border border-zinc-200 px-3 py-2 text-xs font-bold">
+                      <X className="h-3 w-3" /> Cancel
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="mt-3 flex items-center justify-between text-xs text-zinc-400">
-                <span>{formatSize(m.file_size)}</span>
-                <span>{new Date(m.created_at).toLocaleDateString()}</span>
-              </div>
-              <div className="mt-3 flex gap-2">
-                <a
-                  href={m.file_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 inline-flex items-center justify-center gap-1 rounded-full bg-[#4C1769] text-white px-3 py-2 text-xs font-bold hover:bg-[#3a1155]"
-                >
-                  <ExternalLink className="h-3 w-3" /> Open
-                </a>
-                <a
-                  href={m.file_url}
-                  download
-                  className="flex-1 inline-flex items-center justify-center gap-1 rounded-full bg-[#0E7C3E] text-white px-3 py-2 text-xs font-bold hover:bg-[#0a6431]"
-                >
-                  <Download className="h-3 w-3" /> Download
-                </a>
-                <button
-                  onClick={() => deleteMaterial(m.id, m.file_url)}
-                  className="p-2 rounded-full border border-red-200 text-red-600 hover:bg-red-50"
-                >
-                  <Trash2 className="h-3 w-3" />
-                </button>
-              </div>
+              ) : (
+                <>
+                  <div className="flex items-start gap-3">
+                    <span className="text-3xl">{getFileIcon(m.file_type)}</span>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-bold text-[#1A0B2E] truncate">{m.title}</h3>
+                      {m.description && <p className="text-xs text-zinc-500 mt-0.5 truncate">{m.description}</p>}
+                    </div>
+                  </div>
+                  <div className="mt-3 flex items-center justify-between text-xs text-zinc-400">
+                    <span>{formatSize(m.file_size)}</span>
+                    <span>{new Date(m.created_at).toLocaleDateString()}</span>
+                  </div>
+                  <div className="mt-3 flex gap-2">
+                    <a href={m.file_url} target="_blank" rel="noopener noreferrer" className="flex-1 inline-flex items-center justify-center gap-1 rounded-full bg-[#4C1769] text-white px-3 py-2 text-xs font-bold hover:bg-[#3a1155]">
+                      <ExternalLink className="h-3 w-3" /> Open
+                    </a>
+                    <a href={m.file_url} download className="flex-1 inline-flex items-center justify-center gap-1 rounded-full bg-[#0E7C3E] text-white px-3 py-2 text-xs font-bold hover:bg-[#0a6431]">
+                      <Download className="h-3 w-3" /> Download
+                    </a>
+                    <button onClick={() => startEdit(m)} className="p-2 rounded-full border border-purple-200 text-[#4C1769] hover:bg-purple-50" title="Edit">
+                      <Pencil className="h-3 w-3" />
+                    </button>
+                    <button onClick={() => deleteMaterial(m.id, m.file_url)} className="p-2 rounded-full border border-red-200 text-red-600 hover:bg-red-50" title="Delete">
+                      <Trash2 className="h-3 w-3" />
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           ))}
         </div>

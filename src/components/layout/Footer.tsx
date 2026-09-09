@@ -41,7 +41,7 @@ export function Footer() {
               <li className="flex gap-2"><MapPin className="h-4 w-4 text-[#C9B676] mt-0.5" /> {EVENT.venue}</li>
               <li className="flex gap-2"><Mail className="h-4 w-4 text-[#C9B676]" /> {EVENT.email}</li>
               <li><Link href="/privacy" className="hover:text-white">Privacy</Link> • <Link href="/terms" className="hover:text-white">Terms</Link> • <Link href="/accessibility" className="hover:text-white">Accessibility</Link></li>
-              <li><Link href="/contact" className="hover:text-white">Contact & Support</Link></li>
+              <li><Link href="/certificates" className="hover:text-white">Certificates</Link> • <Link href="/contact" className="hover:text-white">Contact & Support</Link></li>
             </ul>
           </div>
         </div>
