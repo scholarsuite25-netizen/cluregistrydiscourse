@@ -31,7 +31,7 @@ export default function PeoplePage() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="text-center mb-8">
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-[#1A0B2E]">Distinguished Voices</h1>
-          <p className="text-base text-zinc-600 mt-2 max-w-2xl mx-auto">
+          <p className="text-base text-zinc-600 mt-2 max-w-2xl mx-auto text-justify">
             Meet the speakers, chairman, hosts, and organisers of the Maiden Registry Discourse.
           </p>
         </div>
@@ -54,7 +54,7 @@ export default function PeoplePage() {
                       <p className="text-sm font-bold text-[#C9B676] mt-1">{p.role}</p>
                     </div>
                   </div>
-                  <p className="text-sm text-zinc-700 leading-relaxed">{p.bio}</p>
+                  <p className="text-sm text-zinc-700 leading-relaxed text-justify">{p.bio}</p>
                   <Link href="/people" className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-[#4C1769] hover:gap-2 transition-all">
                     Full profile <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -67,7 +67,7 @@ export default function PeoplePage() {
         {/* Local Organising Committee */}
         <div className="mt-10 rounded-[24px] bg-white border border-purple-100 p-6">
           <h3 className="text-xl font-black text-[#4C1769]">Local Organising Committee</h3>
-          <p className="text-sm text-zinc-600 mt-1">The team behind the Maiden Registry Discourse. Tap to call or message any member.</p>
+          <p className="text-sm text-zinc-600 mt-1 text-justify">The team behind the Maiden Registry Discourse. Tap to call or message any member.</p>
           <div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {LOC_MEMBERS.map((m) => {
               const initials = m.name.replace(/^(Mr\.|Mrs\.|Miss|Engr\.|Dr\.|Prof\.)\s*/, "").split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
