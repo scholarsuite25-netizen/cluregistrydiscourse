@@ -40,25 +40,18 @@ export default function PeoplePage() {
         <div className="grid md:grid-cols-2 gap-6">
           {PEOPLE.map((p) => (
             <div key={p.slug} className="rounded-[24px] bg-white border border-purple-100 shadow-lg overflow-hidden">
-              <div className="flex">
-                {/* Photo — fixed 2x2 square, text wraps around */}
-                <div className="relative w-36 h-36 shrink-0">
+              <div className="p-5">
+                {/* Photo — fixed 2x2 square, floated left so text wraps around it */}
+                <div className="relative float-left mr-4 mb-3 w-36 h-36 shrink-0">
                   <Image src={p.photo} alt={p.name} fill sizes="144px" className={`object-cover ${p.flip ? "-scale-x-100" : ""}`} />
                   <span className="absolute bottom-0 left-0 right-0 bg-[#4C1769]/85 text-white text-center text-[10px] py-1.5 font-bold">{p.badge}</span>
                 </div>
-                {/* Text wraps around the photo */}
-                <div className="p-5 flex-1">
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <div>
-                      <h3 className="font-black text-lg leading-tight text-[#1A0B2E]">{p.name}</h3>
-                      <p className="text-sm font-bold text-[#C9B676] mt-1">{p.role}</p>
-                    </div>
-                  </div>
-                  <p className="text-sm text-zinc-700 leading-relaxed text-justify">{p.bio}</p>
-                  <Link href="/people" className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-[#4C1769] hover:gap-2 transition-all">
-                    Full profile <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
+                <h3 className="font-black text-lg leading-tight text-[#1A0B2E]">{p.name}</h3>
+                <p className="text-sm font-bold text-[#C9B676] mt-1">{p.role}</p>
+                <p className="text-sm text-zinc-700 leading-relaxed text-justify mt-3">{p.bio}</p>
+                <Link href="/people" className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-[#4C1769] hover:gap-2 transition-all">
+                  Full profile <ArrowRight className="h-4 w-4" />
+                </Link>
               </div>
             </div>
           ))}
