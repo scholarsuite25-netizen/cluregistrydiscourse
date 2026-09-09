@@ -28,17 +28,6 @@ export const BRAND = {
 
 export const PEOPLE = [
   {
-    slug: "mojisola-ladipo",
-    name: "Chief (Mrs.) Mojisola Olusola Ladipo, FNIM, mni",
-    altName: "Dr. (Mrs.) Moji Ladipo",
-    role: "Lecturer of the Day",
-    badge: "Keynote Lecturer",
-    excerpt: "Distinguished university administrator and the first female Registrar of the University of Ibadan. Served as Registrar for ten years and contributed extensively to professional university administration, leadership development, and mentoring in Nigeria.",
-    bio: "Chief (Mrs.) Mojisola Olusola Ladipo, FNIM, mni, is a distinguished university administrator and the first female Registrar of the University of Ibadan. She served as Registrar for ten years and has contributed extensively to professional university administration, leadership development, training, and mentoring in Nigeria. She earned a first degree in English and a master's in Industrial and Labour Relations from the University of Ibadan and helped revive the Committee of Registrars of Nigerian Universities.",
-    initials: "ML",
-    photo: "/people/mojisola-ladipo.png",
-  },
-  {
     slug: "ayodeji-olukoju",
     name: "Distinguished Professor Ayodeji O. Olukoju, FNAL",
     role: "Chairman of the Day — Pro-Chancellor & Chairman, Governing Council, Chrisland University",
@@ -47,6 +36,7 @@ export const PEOPLE = [
     bio: "Distinguished Professor Ayodeji Oladimeji Olukoju is a Professor of History and Fellow of the Nigerian Academy of Letters. His scholarship spans maritime, transport, economic, social, corporate, and urban history. He previously served as Vice-Chancellor of Caleb University and holds senior academic and university governance experience.",
     initials: "AO",
     photo: "/people/ayodeji-olukoju.png",
+    flip: false,
   },
   {
     slug: "oyedunni-arulogun",
@@ -57,6 +47,19 @@ export const PEOPLE = [
     bio: "Professor Oyedunni Sola Arulogun is a Professor of Health Promotion and Education and Vice-Chancellor of Chrisland University. Her work includes health promotion, community engagement, qualitative research, mentoring, and capacity building. She previously held academic leadership roles at the University of Ibadan.",
     initials: "OA",
     photo: "/people/oyedunni-arulogun.png",
+    flip: false,
+  },
+  {
+    slug: "mojisola-ladipo",
+    name: "Chief (Mrs.) Mojisola Olusola Ladipo, FNIM, mni",
+    altName: "Dr. (Mrs.) Moji Ladipo",
+    role: "Lecturer of the Day",
+    badge: "Keynote Lecturer",
+    excerpt: "Distinguished university administrator and the first female Registrar of the University of Ibadan. Served as Registrar for ten years and contributed extensively to professional university administration, leadership development, and mentoring in Nigeria.",
+    bio: "Chief (Mrs.) Mojisola Olusola Ladipo, FNIM, mni, is a distinguished university administrator and the first female Registrar of the University of Ibadan. She served as Registrar for ten years and has contributed extensively to professional university administration, leadership development, training, and mentoring in Nigeria. She earned a first degree in English and a master's in Industrial and Labour Relations from the University of Ibadan and helped revive the Committee of Registrars of Nigerian Universities.",
+    initials: "ML",
+    photo: "/people/mojisola-ladipo.png",
+    flip: true,
   },
   {
     slug: "sb-omotoso",
@@ -67,6 +70,7 @@ export const PEOPLE = [
     bio: "Mr. S. B. Omotoso is the Registrar of Chrisland University, Abeokuta and Host of the Maiden Registry Discourse. A fuller profile will be published upon official approval.",
     initials: "SO",
     photo: "/people/sb-omotoso.png",
+    flip: false,
   },
 ] as const;
 

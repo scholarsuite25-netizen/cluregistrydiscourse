@@ -43,7 +43,7 @@ export default function PeoplePage() {
               <div className="flex">
                 {/* Photo — fixed 2x2 square, text wraps around */}
                 <div className="relative w-36 h-36 shrink-0">
-                  <Image src={p.photo} alt={p.name} fill sizes="144px" className="object-cover" />
+                  <Image src={p.photo} alt={p.name} fill sizes="144px" className={`object-cover ${p.flip ? "-scale-x-100" : ""}`} />
                   <span className="absolute bottom-0 left-0 right-0 bg-[#4C1769]/85 text-white text-center text-[10px] py-1.5 font-bold">{p.badge}</span>
                 </div>
                 {/* Text wraps around the photo */}
