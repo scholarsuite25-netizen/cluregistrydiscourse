@@ -1,7 +1,6 @@
 import { PEOPLE } from "@/lib/constants";
-import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import { Phone, MessageCircle } from "lucide-react";
 
 const LOC_MEMBERS = [
   { name: "Mr. Olubunmi Omomogbe", role: "Chairman / Logistics", phone: "07038347947" },
@@ -49,9 +48,6 @@ export default function PeoplePage() {
                 <h3 className="font-black text-lg leading-tight text-[#1A0B2E]">{p.name}</h3>
                 <p className="text-sm font-bold text-[#C9B676] mt-1">{p.role}</p>
                 <p className="text-sm text-zinc-700 leading-relaxed text-justify mt-3">{p.bio}</p>
-                <Link href="/people" className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-[#4C1769] hover:gap-2 transition-all">
-                  Full profile <ArrowRight className="h-4 w-4" />
-                </Link>
               </div>
             </div>
           ))}
