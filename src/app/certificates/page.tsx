@@ -35,21 +35,21 @@ export default function CertificatesPage() {
             <Download className="h-5 w-5 text-[#C9B676]" /> How to get your copy
           </h2>
           <ol className="mt-4 space-y-4 text-sm sm:text-[15px] text-white/90 leading-relaxed">
-            <li className="flex gap-3">
+            <li className="flex gap-3 items-start">
               <span className="h-6 w-6 rounded-full bg-[#C9B676] text-[#4C1769] grid place-items-center font-black text-xs shrink-0 mt-0.5">1</span>
-              <div>
+              <div className="flex-1 text-justify">
                 <b>Register and attend.</b> Your certificate is issued for the Maiden Registry Discourse on {`15 October 2026`}. You must be an officially registered participant who attended — physically (checked in at the venue) or online (verified in the live Zoom session).
               </div>
             </li>
-            <li className="flex gap-3">
+            <li className="flex gap-3 items-start">
               <span className="h-6 w-6 rounded-full bg-[#C9B676] text-[#4C1769] grid place-items-center font-black text-xs shrink-0 mt-0.5">2</span>
-              <div>
+              <div className="flex-1 text-justify">
                 <b>Wait for the Portal release.</b> After the event, certificates are released in the <b>Portal</b>. Your name, institution and access code are matched automatically to your registration.
               </div>
             </li>
-            <li className="flex gap-3">
+            <li className="flex gap-3 items-start">
               <span className="h-6 w-6 rounded-full bg-[#C9B676] text-[#4C1769] grid place-items-center font-black text-xs shrink-0 mt-0.5">3</span>
-              <div>
+              <div className="flex-1 text-justify">
                 <b>Download or receive it.</b> Sign in to the Portal with your email or access code and download the print-ready PDF. A copy is also emailed to your registered address within a week of the event, and physical attendees may collect a printed copy from the Registry on request.
               </div>
             </li>
@@ -63,9 +63,9 @@ export default function CertificatesPage() {
               <UserCheck className="h-5 w-5 text-[#0E7C3E]" /> Who gets a certificate
             </h2>
             <ul className="mt-4 space-y-3 text-sm text-zinc-700 leading-relaxed">
-              <li className="flex gap-2"><span className="text-[#0E7C3E] font-black">1.</span> All <b>officially registered participants</b> (confirmed) who physically attended the event and were <b>checked in</b> at the venue.</li>
-              <li className="flex gap-2"><span className="text-[#0E7C3E] font-black">2.</span> Online participants who joined the live <b>Zoom session</b> and were verified as present (attendance is logged from the session).</li>
-              <li className="flex gap-2"><span className="text-[#0E7C3E] font-black">3.</span> The <b>Guest Lecturer, Chairman, hosts</b> and <b>LOC members</b> receive appreciation / recognition certificates.</li>
+              <li className="flex gap-3 items-start"><span className="h-5 w-5 rounded-full bg-[#0E7C3E] text-white grid place-items-center font-black text-[11px] shrink-0 mt-0.5">1</span><span className="flex-1 text-justify">All <b>officially registered participants</b> (confirmed) who physically attended the event and were <b>checked in</b> at the venue.</span></li>
+              <li className="flex gap-3 items-start"><span className="h-5 w-5 rounded-full bg-[#0E7C3E] text-white grid place-items-center font-black text-[11px] shrink-0 mt-0.5">2</span><span className="flex-1 text-justify">Online participants who joined the live <b>Zoom session</b> and were verified as present (attendance is logged from the session).</span></li>
+              <li className="flex gap-3 items-start"><span className="h-5 w-5 rounded-full bg-[#0E7C3E] text-white grid place-items-center font-black text-[11px] shrink-0 mt-0.5">3</span><span className="flex-1 text-justify">The <b>Guest Lecturer, Chairman, hosts</b> and <b>LOC members</b> receive appreciation / recognition certificates.</span></li>
             </ul>
             <p className="mt-4 text-xs text-zinc-500">
               One certificate is issued per registered participant, printed with the participant&apos;s full name as provided at registration.
@@ -77,11 +77,11 @@ export default function CertificatesPage() {
             <h2 className="text-lg font-black text-[#4C1769] flex items-center gap-2">
               <PenLine className="h-5 w-5 text-[#B25900]" /> Digital signatures — how they are added
             </h2>
-            <ul className="mt-4 space-y-3 text-sm text-zinc-700 leading-relaxed">
-              <li className="flex gap-2"><span className="text-[#B25900] font-black">1.</span> The Registrar and Vice-Chancellor sign on paper (or with a stylus/tablet).</li>
-              <li className="flex gap-2"><span className="text-[#B25900] font-black">2.</span> Each signature is saved as a small image with a <b>white or transparent background</b> (PNG).</li>
-              <li className="flex gap-2"><span className="text-[#B25900] font-black">3.</span> The admin uploads the two images in the <b>admin Certificates console</b>.</li>
-              <li className="flex gap-2"><span className="text-[#B25900] font-black">4.</span> The signatures are <b>automatically placed</b> above each signer&apos;s name on every certificate — no manual work per certificate.</li>
+            <ul className="mt-4 space-y-4 text-sm text-zinc-700 leading-relaxed">
+              <li className="flex gap-3 items-start"><span className="h-5 w-5 rounded-full bg-[#B25900] text-white grid place-items-center font-black text-[11px] shrink-0 mt-0.5">1</span><span className="flex-1 text-justify">The Registrar and Vice-Chancellor sign on paper (or with a stylus/tablet).</span></li>
+              <li className="flex gap-3 items-start"><span className="h-5 w-5 rounded-full bg-[#B25900] text-white grid place-items-center font-black text-[11px] shrink-0 mt-0.5">2</span><span className="flex-1 text-justify">Each signature is saved as a small image with a <b>white or transparent background</b> (PNG).</span></li>
+              <li className="flex gap-3 items-start"><span className="h-5 w-5 rounded-full bg-[#B25900] text-white grid place-items-center font-black text-[11px] shrink-0 mt-0.5">3</span><span className="flex-1 text-justify">The admin uploads the two images in the <b>admin Certificates console</b>.</span></li>
+              <li className="flex gap-3 items-start"><span className="h-5 w-5 rounded-full bg-[#B25900] text-white grid place-items-center font-black text-[11px] shrink-0 mt-0.5">4</span><span className="flex-1 text-justify">The signatures are <b>automatically placed</b> above each signer&apos;s name on every certificate — no manual work per certificate.</span></li>
             </ul>
             <div className="mt-4 rounded-2xl bg-orange-50 border border-orange-200 flex items-start gap-2 p-3">
               <Upload className="h-4 w-4 text-[#B25900] mt-0.5 shrink-0" />
