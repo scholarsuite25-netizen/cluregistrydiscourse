@@ -217,9 +217,10 @@ export default function VisitorsGuidePage() {
 
           {/* Featured Hotels */}
           <div className="mb-8">
-            <h3 className="text-lg font-black text-[#4C1769] mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-black text-[#4C1769] mb-2 flex items-center gap-2">
               <Star className="h-5 w-5 text-[#C9B676]" /> Recommended Hotels
             </h3>
+            <p className="text-sm text-zinc-600 mb-4">Rooms reserved for the Maiden Registry Discourse. Contact hotels directly to book. Rates are per night.</p>
             <div className="rounded-[24px] bg-white border border-purple-100 shadow-lg overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
@@ -227,50 +228,63 @@ export default function VisitorsGuidePage() {
                     <tr className="bg-[#4C1769] text-white">
                       <th className="px-4 py-3 text-left font-bold">Hotel</th>
                       <th className="px-4 py-3 text-left font-bold">Location</th>
-                      <th className="px-4 py-3 text-left font-bold">Rate/Night</th>
-                      <th className="px-4 py-3 text-left font-bold">Phone</th>
-                      <th className="px-4 py-3 text-left font-bold">Rating</th>
-                      <th className="px-4 py-3 text-left font-bold">Notes</th>
+                      <th className="px-4 py-3 text-left font-bold">Rooms & Rates</th>
+                      <th className="px-4 py-3 text-left font-bold">Contact</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {/* Conference Hotel */}
+                    {/* Academy Suites */}
                     <tr className="border-b border-zinc-100 bg-white">
-                      <td className="px-4 py-3 font-bold text-[#1A0B2E]">Conference Hotel</td>
-                      <td className="px-4 py-3 text-zinc-600">Abeokuta</td>
-                      <td className="px-4 py-3 font-bold text-[#0E7C3E]">₦25,000 – ₦50,000</td>
-                      <td className="px-4 py-3">
-                        <a href="tel:+2348023456789" className="inline-flex items-center gap-1 text-[#4C1769] font-bold hover:underline">
-                          <Phone className="h-3 w-3" /> +234 802 345 6789
-                        </a>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex gap-0.5">
-                          {[...Array(5)].map((_, j) => (
-                            <Star key={j} className={`h-3 w-3 ${j < 4 ? "text-[#C9B676] fill-[#C9B676]" : "text-zinc-300"}`} />
-                          ))}
+                      <td className="px-4 py-4 font-bold text-[#1A0B2E]">Academy Suites</td>
+                      <td className="px-4 py-4 text-zinc-600 whitespace-normal">Beside Abadiyyah Central Mosque, M.K.O Abiola Way, Leme, Abeokuta</td>
+                      <td className="px-4 py-4">
+                        <div className="space-y-1">
+                          <div className="flex justify-between gap-6 text-zinc-700"><span>Super Deluxe (12 rooms)</span><span className="font-bold text-[#0E7C3E]">₦35,000</span></div>
+                          <div className="flex justify-between gap-6 text-zinc-700"><span>Super Royal (10 rooms)</span><span className="font-bold text-[#0E7C3E]">₦40,000</span></div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-xs text-zinc-600">4-star. Conference facilities. Professional service.</td>
+                      <td className="px-4 py-4">
+                        <a href="tel:+2348176666601" className="inline-flex items-center gap-1 text-[#4C1769] font-bold hover:underline">
+                          <Phone className="h-3 w-3" /> 0817 666 6601
+                        </a>
+                      </td>
                     </tr>
-                    {/* Park Inn */}
+                    {/* Grand Style Hotel */}
                     <tr className="border-b border-zinc-100 bg-purple-50/30">
-                      <td className="px-4 py-3 font-bold text-[#1A0B2E]">Park Inn</td>
-                      <td className="px-4 py-3 text-zinc-600">Abeokuta</td>
-                      <td className="px-4 py-3 font-bold text-[#0E7C3E]">₦18,000 – ₦35,000</td>
-                      <td className="px-4 py-3">
-                        <a href="tel:+2348034567890" className="inline-flex items-center gap-1 text-[#4C1769] font-bold hover:underline">
-                          <Phone className="h-3 w-3" /> +234 803 456 7890
-                        </a>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex gap-0.5">
-                          {[...Array(5)].map((_, j) => (
-                            <Star key={j} className={`h-3 w-3 ${j < 3 ? "text-[#C9B676] fill-[#C9B676]" : "text-zinc-300"}`} />
-                          ))}
+                      <td className="px-4 py-4 font-bold text-[#1A0B2E]">Grand Style Hotel</td>
+                      <td className="px-4 py-4 text-zinc-600 whitespace-normal">No 6, Lisabi Grammar School, Idi-Aba, Abeokuta</td>
+                      <td className="px-4 py-4">
+                        <div className="space-y-1">
+                          <div className="flex justify-between gap-6 text-zinc-700"><span>Deluxe Room (6 rooms)</span><span className="font-bold text-[#0E7C3E]">₦30,000</span></div>
+                          <div className="flex justify-between gap-6 text-zinc-700"><span>Grand Royal (15 rooms)</span><span className="font-bold text-[#0E7C3E]">₦35,000</span></div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-xs text-zinc-600">Mid-range. Clean rooms. Good service.</td>
+                      <td className="px-4 py-4">
+                        <a href="tel:+2349135935259" className="inline-flex items-center gap-1 text-[#4C1769] font-bold hover:underline">
+                          <Phone className="h-3 w-3" /> 0913 593 5259
+                        </a>
+                      </td>
+                    </tr>
+                    {/* Abeokuta International Hotel */}
+                    <tr className="border-b border-zinc-100 bg-white">
+                      <td className="px-4 py-4 font-bold text-[#1A0B2E]">Abeokuta International Hotel</td>
+                      <td className="px-4 py-4 text-zinc-600 whitespace-normal">32, Elite Road, Idi-Aba, Abeokuta</td>
+                      <td className="px-4 py-4">
+                        <div className="space-y-1">
+                          <div className="flex justify-between gap-6 text-zinc-700"><span>Mini Deluxe (12 rooms)</span><span className="font-bold text-[#0E7C3E]">₦25,000</span></div>
+                          <div className="flex justify-between gap-6 text-zinc-700"><span>Standard Deluxe (11 rooms)</span><span className="font-bold text-[#0E7C3E]">₦30,000</span></div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="space-y-1">
+                          <a href="tel:+2348167148838" className="inline-flex items-center gap-1 text-[#4C1769] font-bold hover:underline">
+                            <Phone className="h-3 w-3" /> 0816 714 8838
+                          </a>
+                          <a href="tel:+2348079500964" className="inline-flex items-center gap-1 text-[#4C1769] font-bold hover:underline">
+                            <Phone className="h-3 w-3" /> 0807 950 0964
+                          </a>
+                        </div>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
