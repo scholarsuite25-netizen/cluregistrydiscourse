@@ -77,13 +77,12 @@ export const PEOPLE = [
 export const PROGRAMME = [
   { time: "08:00 – 08:45", title: "Arrival & Registration", speaker: "LOC Secretariat", venue: "Auditorium Foyer", desc: "Collection of access passes, kit and seating." },
   { time: "09:00 – 09:20", title: "Opening & National Anthem", speaker: "University Anthem / Protocol", venue: "Main Auditorium", desc: "Welcome, introductions and opening prayers." },
-  { time: "09:20 – 09:35", title: "Welcome Address", speaker: "Mr. S. B. Omotoso — Registrar", venue: "Main Auditorium", desc: "Host remarks and discourse framing." },
-  { time: "09:35 – 09:50", title: "Chief Host Address", speaker: "Prof. Oyedunni Sola Arulogun — Vice-Chancellor", venue: "Main Auditorium", desc: "Vision for governance and service." },
-  { time: "09:50 – 10:05", title: "Chairman's Opening Remarks", speaker: "Prince Bowo Olateru-Olagbegi — Governing Council Member", venue: "Main Auditorium", desc: "Contextualising change in higher education management." },
-  { time: "10:05 – 11:00", title: "Keynote: Governance, Innovation & Service", speaker: "Chief (Mrs.) Mojisola Ladipo, FNIM, mni", venue: "Main Auditorium + Zoom", desc: "The lecture of the day — changing higher education management." },
+  { time: "09:20 – 09:35", title: "Welcome Address", speaker: "Mr. S. B. Omotoso — Registrar", venue: "Main Auditorium", desc: "" },
+  { time: "09:35 – 09:50", title: "Chief Host Address", speaker: "Prof. Oyedunni Sola Arulogun — Vice-Chancellor", venue: "Main Auditorium", desc: "" },
+  { time: "09:50 – 10:05", title: "Chairman's Opening Remarks", speaker: "Prince Bowo Olateru-Olagbegi — Governing Council Member", venue: "Main Auditorium", desc: "" },
+  { time: "10:05 – 11:00", title: "Keynote Lecture", speaker: "Chief (Mrs.) Mojisola Ladipo, FNIM, mni", venue: "Main Auditorium + Zoom", desc: "" },
   { time: "11:00 – 11:30", title: "Tea Break & Networking", speaker: "—", venue: "Auditorium Lounge", desc: "Refreshments and gallery." },
-  { time: "11:30 – 12:30", title: "Panel Discourse & Q&A", speaker: "Panel of Registrars & Administrators", venue: "Main Auditorium + Zoom", desc: "Innovation in registry practice, digital governance, service excellence." },
-  { time: "12:30 – 12:45", title: "Vote of Thanks & Closing", speaker: "LOC Chairman", venue: "Main Auditorium", desc: "Appreciation and next steps." },
+  { time: "12:30 – 12:45", title: "Vote of Thanks & Closing", speaker: "LOC Chairman", venue: "Main Auditorium", desc: "" },
   { time: "12:45 – 13:30", title: "Group Photographs & Departure", speaker: "—", venue: "Auditorium Forecourt", desc: "Certificates and materials released to verified attendees." },
 ] as const;
 
