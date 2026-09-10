@@ -75,15 +75,17 @@ export const PEOPLE = [
 ] as const;
 
 export const PROGRAMME = [
-  { time: "08:00 – 08:45", title: "Arrival & Registration", speaker: "LOC Secretariat", venue: "Auditorium Foyer", desc: "Collection of access passes, kit and seating." },
-  { time: "09:00 – 09:20", title: "Opening & National Anthem", speaker: "University Anthem / Protocol", venue: "Main Auditorium", desc: "Welcome, introductions and opening prayers." },
-  { time: "09:20 – 09:35", title: "Welcome Address", speaker: "Mr. S. B. Omotoso — Registrar", venue: "Main Auditorium", desc: "" },
-  { time: "09:35 – 09:50", title: "Chief Host Address", speaker: "Prof. Oyedunni Sola Arulogun — Vice-Chancellor", venue: "Main Auditorium", desc: "" },
-  { time: "09:50 – 10:05", title: "Chairman's Opening Remarks", speaker: "Prince Bowo Olateru-Olagbegi — Governing Council Member", venue: "Main Auditorium", desc: "" },
+  { time: "08:00 – 08:45", title: "Arrival & Registration", speaker: "LOC Secretariat", venue: "Auditorium Foyer", desc: "" },
+  { time: "09:00 – 09:20", title: "Opening & National Anthem", speaker: "University Anthem / Protocol", venue: "Main Auditorium", desc: "" },
+  { time: "09:20 – 09:30", title: "Recognition", speaker: "Protocol", venue: "Main Auditorium", desc: "Introduction of dignitaries." },
+  { time: "09:30 – 09:40", title: "Welcome Address", speaker: "Mr. S. B. Omotoso — Registrar", venue: "Main Auditorium", desc: "" },
+  { time: "09:40 – 09:50", title: "Chief Host Address", speaker: "Prof. Oyedunni Sola Arulogun — Vice-Chancellor", venue: "Main Auditorium", desc: "" },
+  { time: "09:50 – 10:00", title: "Chairman's Opening Remarks", speaker: "Prince Bowo Olateru-Olagbegi — Governing Council Member", venue: "Main Auditorium", desc: "" },
+  { time: "10:00 – 10:05", title: "Citation of the Keynote Lecturer", speaker: "Protocol", venue: "Main Auditorium", desc: "" },
   { time: "10:05 – 11:00", title: "Keynote Lecture", speaker: "Chief (Mrs.) Mojisola Ladipo, FNIM, mni", venue: "Main Auditorium + Zoom", desc: "" },
-  { time: "11:00 – 11:30", title: "Tea Break & Networking", speaker: "—", venue: "Auditorium Lounge", desc: "Refreshments and gallery." },
+  { time: "11:00 – 11:30", title: "Tea Break & Networking", speaker: "—", venue: "Auditorium Lounge", desc: "" },
   { time: "12:30 – 12:45", title: "Vote of Thanks & Closing", speaker: "LOC Chairman", venue: "Main Auditorium", desc: "" },
-  { time: "12:45 – 13:30", title: "Group Photographs & Departure", speaker: "—", venue: "Auditorium Forecourt", desc: "Certificates and materials released to verified attendees." },
+  { time: "12:45 – 13:30", title: "Group Photographs & Departure", speaker: "—", venue: "Auditorium Forecourt", desc: "" },
 ] as const;
 
 export const STATS = [
