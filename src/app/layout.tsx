@@ -13,16 +13,23 @@ const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["lati
 
 export const metadata: Metadata = {
   title: {
-    default: "CLU Registry Discourse 2026 — Governance, Innovation & Service",
-    template: "%s | CLU Registry Discourse",
+    default: "Chrisland University, Abeokuta",
+    template: "%s | Chrisland University, Abeokuta",
   },
-  description: `Maiden Registry Discourse of Chrisland University, Abeokuta — ${EVENT.fullTitle}. ${EVENT.date}, ${EVENT.venue}. Physical & Online via Zoom.`,
+  description: `Chrisland University, Abeokuta — Maiden Registry Discourse 2026. ${EVENT.fullTitle}. ${EVENT.date}, ${EVENT.venue}. Physical & Online via Zoom.`,
   manifest: "/manifest.json",
   icons: { icon: "/icon.png", apple: "/apple-icon.png" },
   openGraph: {
-    title: "CLU Registry Discourse 2026",
-    description: EVENT.fullTitle,
+    title: "Chrisland University, Abeokuta",
+    description: `Maiden Registry Discourse 2026 — ${EVENT.fullTitle}. ${EVENT.date}, ${EVENT.venue}. Physical & Online via Zoom.`,
     type: "website",
+    siteName: "Chrisland University, Abeokuta",
+    images: [{ url: "/images/clu-logo.png", width: 447, height: 447, alt: "Chrisland University, Abeokuta" }],
+  },
+  appleWebApp: {
+    capable: true,
+    title: "Chrisland University, Abeokuta",
+    statusBarStyle: "default",
   },
   metadataBase: new URL("https://cluregistrydiscourse.vercel.app"),
 };
