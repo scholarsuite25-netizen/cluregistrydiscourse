@@ -4,7 +4,7 @@ import { Phone, MessageCircle } from "lucide-react";
 
 const LOC_MEMBERS = [
   { name: "Mr. Olubunmi Omomogbe", role: "Chairman / Logistics", phone: "07038347947" },
-  { name: "Engr. Ajibade", role: "Member / Logistics", phone: "08057070965" },
+  { name: "Engr. Oluseyi Adedayo Ajibade", role: "Member / Logistics", phone: "08057070965" },
   { name: "Mr. Rapheal Decampos", role: "Member / Logistics / Protocols", phone: "08023364530" },
   { name: "Mrs. Dolapo Akintoye", role: "Member / Logistics / Protocols", phone: "07039736973" },
   { name: "Mr. Tobi Olaleye", role: "Member / Media", phone: "08167741656" },
@@ -16,6 +16,7 @@ const LOC_MEMBERS = [
   { name: "Miss Esther Okafor", role: "Member / Welfare", phone: "07041389211" },
   { name: "Mrs. Mercy Jonah", role: "Member / Welfare", phone: "08064619722" },
   { name: "Mrs. Loveth Okonkwo", role: "Secretary / Welfare", phone: "07032690847" },
+{ name: "Mrs. Faith Osuji", role: "Member / Welfare", phone: "08138832998" },
 ];
 
 function waLink(phone: string) {
