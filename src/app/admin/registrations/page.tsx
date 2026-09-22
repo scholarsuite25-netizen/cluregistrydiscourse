@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
-import { Download, Search, Users, Filter, RefreshCw, CheckCircle2, Clock, Mail, Phone, Building2, Pencil, Trash2, Save, X } from "lucide-react";
+import { Download, Printer, Search, Users, Filter, RefreshCw, CheckCircle2, Clock, Mail, Phone, Building2, Pencil, Trash2, Save, X } from "lucide-react";
 
 type Registration = {
   id: string;
@@ -163,6 +163,42 @@ export default function AdminRegistrationsPage() {
     URL.revokeObjectURL(url);
   }
 
+  // Print a clean participant list
+  function printList() {
+    const w = window.open("", "_blank", "width=900,height=700");
+    if (!w) return;
+    const rows = filtered.map((r, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${r.first_name} ${r.surname}</td>
+        <td>${r.institution}</td>
+        <td>${r.designation || "—"}</td>
+        <td>${r.participation_mode}</td>
+        <td>${r.status}</td>
+        <td>${r.phone}</td>
+        <td>${r.email}</td>
+      </tr>`).join("");
+    w.document.write(`<!DOCTYPE html><html><head><title>CLU Registry Discourse — Participants</title>
+      <style>
+        body{font-family:Arial,Helvetica,sans-serif;font-size:11px;margin:24px;color:#111}
+        h1{font-size:16px;margin:0 0 4px}
+        .sub{color:#555;margin-bottom:16px;font-size:11px}
+        table{width:100%;border-collapse:collapse}
+        th{background:#4C1769;color:#fff;padding:6px 8px;text-align:left;font-size:10px;text-transform:uppercase}
+        td{border:1px solid #ccc;padding:5px 8px}
+        tr:nth-child(even) td{background:#f6f2fa}
+        .pageno{text-align:right;color:#999;font-size:10px;margin-top:8px}
+        @media print{ .no-print{display:none} }
+      </style></head><body>
+      <h1>CLU Registry Discourse — Registered Participants</h1>
+      <div class="sub">${new Date().toLocaleString()} • ${filtered.length} participants (${filtered.filter(r => r.participation_mode === "Physical").length} Physical, ${filtered.filter(r => r.participation_mode === "Online").length} Online)</div>
+      <table><thead><tr><th>S/N</th><th>Name</th><th>Institution</th><th>Designation</th><th>Mode</th><th>Status</th><th>Phone</th><th>Email</th></tr></thead><tbody>${rows}</tbody></table>
+      <div class="pageno no-print">Click the print button or Ctrl+P to print / save as PDF.</div>
+      </body></html>`);
+    w.document.close();
+    setTimeout(() => w.print(), 400);
+  }
+
   return (
     <div className="bg-[#F8F5FF] py-6 min-h-[70vh]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -178,6 +214,9 @@ export default function AdminRegistrationsPage() {
             </button>
             <button onClick={downloadCSV} className="inline-flex items-center gap-2 rounded-full bg-[#4C1769] text-white px-4 py-2 text-sm font-bold">
               <Download className="h-4 w-4" /> Download CSV
+            </button>
+            <button onClick={printList} className="inline-flex items-center gap-2 rounded-full bg-[#B25900] text-white px-4 py-2 text-sm font-bold">
+              <Printer className="h-4 w-4" /> Print List
             </button>
             <button onClick={downloadExcel} className="inline-flex items-center gap-2 rounded-full bg-[#0E7C3E] text-white px-4 py-2 text-sm font-bold">
               <Download className="h-4 w-4" /> Download Excel
