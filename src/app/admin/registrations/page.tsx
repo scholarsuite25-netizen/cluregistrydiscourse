@@ -118,13 +118,7 @@ export default function AdminRegistrationsPage() {
     ]);
 
     const csv = [headers, ...rows].map((row) => row.map((cell) => `"${cell}"`).join(",")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `CLU-Registrations-${new Date().toISOString().slice(0, 10)}.csv`;
-    link.click();
-    URL.revokeObjectURL(url);
+    downloadBlob(new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" }), `CLU-Registrations-${new Date().toISOString().slice(0, 10)}.csv`);
   }
 
   // Download Excel (simple XML format)
@@ -154,13 +148,18 @@ export default function AdminRegistrationsPage() {
     });
 
     xml += '</Table>\n</Worksheet>\n</Workbook>';
-    const blob = new Blob([xml], { type: "application/vnd.ms-excel" });
+    downloadBlob(new Blob([xml], { type: "application/vnd.ms-excel" }), `CLU-Registrations-${new Date().toISOString().slice(0, 10)}.xls`);
+  }
+
+  function downloadBlob(blob: Blob, filename: string) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `CLU-Registrations-${new Date().toISOString().slice(0, 10)}.xls`;
+    link.download = filename;
+    document.body.appendChild(link);
     link.click();
-    URL.revokeObjectURL(url);
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
   // Print a clean participant list
