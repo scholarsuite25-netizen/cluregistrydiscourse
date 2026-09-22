@@ -33,6 +33,8 @@ export function Navbar() {
             <a href={EVENT.phoneHref} className="hover:text-[#C9B676] transition">{EVENT.phone}</a>
             <span className="opacity-30">|</span>
             <a href={`mailto:${EVENT.email}`} className="hover:text-[#C9B676] transition">{EVENT.email}</a>
+            <span className="opacity-30">|</span>
+            <a href={`mailto:${EVENT.emailAlt}`} className="hover:text-[#C9B676] transition">{EVENT.emailAlt}</a>
           </span>
         </div>
       </div>

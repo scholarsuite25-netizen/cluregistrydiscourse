@@ -8,7 +8,9 @@ export default function ContactPage(){
         <a href={`${EVENT.whatsappHref}?text=${encodeURIComponent(EVENT.whatsappPrefill)}`} target="_blank" className="rounded-2xl bg-[#25D366] text-white p-6"><div className="text-xs tracking-widest font-bold opacity-80">WHATSAPP</div><div className="font-black text-lg">Chat instantly</div></a>
       </div>
       <div className="mt-4 rounded-2xl border p-6">
-        <div className="text-xs tracking-widest font-bold text-[#4C1769]">EMAIL</div><div className="font-bold">{EVENT.email}</div>
+        <div className="text-xs tracking-widest font-bold text-[#4C1769]">EMAIL</div>
+        <div className="font-bold">{EVENT.email}</div>
+        <div className="text-sm text-zinc-600">{EVENT.emailAlt}</div>
         <p className="text-sm text-zinc-600 mt-2">Venue: {EVENT.venue} • Date: {EVENT.date} • Time: {EVENT.startTime}</p>
       </div>
     </div>

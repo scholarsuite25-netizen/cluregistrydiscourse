@@ -10,8 +10,8 @@ PRODID:-//CLU//Registry Discourse//EN
 BEGIN:VEVENT
 UID:clu-registry-discourse-2026@chrislanduniversity.edu.ng
 DTSTAMP:20261001T080000Z
-DTSTART:20261015T080000Z
-DTEND:20261015T123000Z
+DTSTART:20261015T090000Z
+DTEND:20261015T143000Z
 SUMMARY:CLU Registry Discourse — Governance, Innovation and Service
 DESCRIPTION:Maiden Registry Discourse of Chrisland University\\nVenue: ${EVENT.venue}
 LOCATION:${EVENT.venue}

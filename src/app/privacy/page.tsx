@@ -1,8 +1,10 @@
+import { EVENT } from "@/lib/constants";
+
 export default function PrivacyPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 prose prose-zinc">
       <h1>Privacy Notice</h1>
-      <p><b>Effective:</b> 6 September 2026 • <b>Contact:</b> registrydisourse@gmail.com • <b>Phone:</b> +234 703 834 7947</p>
+      <p><b>Effective:</b> 6 September 2026 • <b>Contact:</b> {EVENT.email} • {EVENT.emailAlt} • <b>Phone:</b> +234 703 834 7947</p>
       <h2>What we collect & why</h2>
       <ul>
         <li>Name, email, phone, institution, department, designation — to register you, issue your access pass/QR and verify attendance.</li>
